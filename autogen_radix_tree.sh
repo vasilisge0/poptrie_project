@@ -3,6 +3,9 @@
 # Exit on error
 set -e
 
+echo "Running libtoolize..."
+libtoolize
+
 echo "Running aclocal..."
 aclocal
 
