@@ -11,3 +11,8 @@ echo "Building Radix Tree"
 cd modified_radix_tree
 ../scripts/autogen_radix_tree.sh
 cd ..
+
+echo "Building Tree Bitmap"
+cd modified_tree_bitmap
+make all
+cd ..
