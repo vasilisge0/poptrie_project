@@ -12,16 +12,23 @@
 
 ### Build Instructions
 
-#### Radix-Tree
+Currently, the developers of radix-tree and poptrie repos hard-coded an absolute path, but I will make it so the file is given as a command line argument to ensure ease of benchmarking.
+
+Make sure you install all of the tools necessary to use automake tools
 
 ```
-cd <radix_tree>
-mv ../autogen_radix_tree.sh .
-chmod +x autogen_radix_tree.sh
-./autogen_radix_tree.sh
+sudo apt update
+sudo apt install autoconf automake libtool m4
 ```
 
-Currently, the developers of that repo hard-coded an absolute path, but I will make it so the file is given as a command line argument to ensure ease of benchmarking.
+#### The `make_all.sh` script
+
+```
+./make_all.sh
+```
+
+Look inside the actual scripts to see how each individual repository is built.
+
 
 
 
