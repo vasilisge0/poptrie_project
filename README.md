@@ -18,7 +18,7 @@ Make sure you install all of the tools necessary to use automake tools
 
 ```
 sudo apt update
-sudo apt install autoconf automake libtool m4
+sudo apt install autoconf automake libtool m4 cmake build-essential
 ```
 
 #### The `make_all.sh` script
