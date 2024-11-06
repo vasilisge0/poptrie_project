@@ -16,3 +16,10 @@ echo "Building Tree Bitmap"
 cd modified_tree_bitmap
 make all
 cd ..
+
+echo "Building SAIL"
+cd modified_sail
+mkdir -p build
+cd build
+cmake ..
+make
