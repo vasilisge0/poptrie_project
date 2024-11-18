@@ -352,7 +352,7 @@ void test_lookup_valid_v6(struct lookup_trie_v6 *trie, FILE *fp)
     
     while((read = getline(&line, &len, fp)) != -1){
         line[strlen(line) - 1] = '\0';
-        r = inet_pton(AF_INET6, line, (void *)&addr);
+        r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
         if ( r == 0 ){
             printf("wrong format\n");
             continue;
@@ -436,9 +436,9 @@ void rm_test_v6(FILE *fp, struct lookup_trie_v6 * trie)
 
 }
 
-void test_lookup_valid(struct lookup_trie *trie)
+void test_lookup_valid(struct lookup_trie *trie, char * filename)
 {
-    FILE *fp = fopen("ret_5","r");
+    FILE *fp = fopen(filename,"r"); //ret_5
     if (fp == NULL)
         exit(-1);
 
@@ -497,12 +497,12 @@ void test_lookup_valid(struct lookup_trie *trie)
     //mem_usage(&trie->mm);
 }
 
-void ipv6_test()
+void ipv6_test(char * filename)
 {
     //init
     printf("in ipv6 test\n");
 
-    FILE *fp = fopen("ipv6_fib","r");
+    FILE *fp = fopen(filename,"r");
     if (fp == NULL)
         exit(-1);
     
@@ -517,9 +517,10 @@ void ipv6_test()
     load_routes_v6(&trie, fp);
     //print_prefix_v6(&trie, print_nhi);
 
-    FILE *fp2 = fopen("fib_rm", "r");
+    FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
     if (fp2 != NULL)
         test_lookup_valid_v6(&trie,fp2);
+    fclose(fp2);
 
     mem_trie = mem_trie_v6(&trie);
     printf("ms.mem %d\n", mem_trie.mem);
@@ -527,10 +528,10 @@ void ipv6_test()
 
 
     FILE *fp3;
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
+    fp3 = fopen(filename, "r");
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
+    fclose(fp3);
 
 
 
@@ -561,9 +562,9 @@ void ipv6_test()
 
 }
 
-void test_random_ips(struct lookup_trie *trie)
+void test_random_ips(struct lookup_trie *trie, char * filename)
 {
-    FILE *fp = fopen("ret_5","r");
+    FILE *fp = fopen(filename,"r"); //ret_5
     if (fp == NULL)
         exit(-1);
 
@@ -629,9 +630,9 @@ void test_random_ips(struct lookup_trie *trie)
 
 }
 
-void ipv4_test()
+void ipv4_test(char * filename)
 {
-    FILE *fp = fopen("rrc00(2013080808).txt.port","r");
+    FILE *fp = fopen(filename,"r"); //"rrc00(2013080808).txt.port"
     //FILE *fp = fopen("ret_5","r");
     if (fp == NULL)
         exit(-1);
@@ -647,7 +648,7 @@ void ipv4_test()
     load_fib(&trie, fp);
 
     level_memory(&trie);
-    //test_lookup_valid(&trie);
+    test_lookup_valid(&trie, filename);
     //mem_alloc_stat_v6();
 
     //rewind(fp);
@@ -662,9 +663,9 @@ void ipv4_test()
 
 }
 
-void test_one_prefix()
+void test_one_prefix(char * filename)
 {
-    FILE *fp = fopen("ret_5","r");
+    FILE *fp = fopen(filename,"r"); // ret_5
     if (fp == NULL)
         exit(-1);
 
@@ -714,11 +715,19 @@ void test_one_prefix()
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
     //fast_table_init();
-    //ipv4_test();
-    ipv6_test();
+    if (argc < 3) {
+        printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
+        // exit(-1);
+    }
+    printf("We need specific files for these tests being run.\n");
+    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
+    // char * v4_filename = argv[1];
+    // char * v6_filename = argv[2];
+    // //ipv4_test(v4_filename);
+    // ipv6_test(v6_filename);
     //test_one_prefix();
 
     return 0;
