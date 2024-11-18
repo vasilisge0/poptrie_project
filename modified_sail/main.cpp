@@ -429,10 +429,10 @@ void amination()
 }
 void sailPerformanceTest(char *traffic_file, char* fib_file)
 {
-	//printf("\t\t\t********************************************\n");
-	//printf("\t\t\t*-*-*         sail algorithm        *-*-*-*\n");
-	//printf("\t\t\t*-*-*            ICT, CAS            *-*-*-*\n");
-	//printf("\t\t\t********************************************\n");
+	printf("\t\t\t********************************************\n");
+	printf("\t\t\t*-*-*         sail algorithm        *-*-*-*\n");
+	printf("\t\t\t*-*-*            ICT, CAS            *-*-*-*\n");
+	printf("\t\t\t********************************************\n");
 
 	//amination();
 
@@ -474,8 +474,7 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 
 	// QueryPerformanceCounter(&privious1);
 	// long long Lookuptime=1000000*(privious1.QuadPart-privious.QuadPart)/frequence.QuadPart;
-
-	//printf("\tLMPport=%d\n\tLookup time=%u\n\tThroughput is:\t %.3f Mpps\n",LPMPort,Lookuptime, 10000.0*TRACE_READ/Lookuptime);
+	// printf("\tLMPport=%d\n\tLookup time=%u\n\tThroughput is:\t %.3f Mpps\n",LPMPort,Lookuptime, 10000.0*TRACE_READ/Lookuptime);
 
 	int updateEntryCount = BFLevelPushingTrieUpdate(updateFile, &tFib);
 }
@@ -557,15 +556,16 @@ void test(int argc, char** argv)
 
 	//system("pause");
 
-	// /******************************************Stage 3******************************************/
-	// printf("\n\n\t\tStage Three: The Second Round Update\n");
-	// //update FibTrie stage
-	// updateEntryCount = BFLevelPushingTrieUpdate(argv[1], &tFib);
-	// tFib.ytGetNodeCounts();
+	/******************************************Stage 3******************************************/
+	printf("\n\n\t\tStage Three: The Second Round Update\n");
+	//update FibTrie stage
+	updateEntryCount = BFLevelPushingTrieUpdate(updateFile, &tFib);
+	tFib.ytGetNodeCounts();
 	// printf("\nThe total memory access is :\t%llu.\n", tFib.memory_access);
-	// printf("The total number of Trie node is :\t%d.\n", tFib.allNodeCount);
-	// printf("The total number of solid Trie node is :\t%u.\n", tFib.solidNodeCount);
-	// printf("The total number of updated routing items is :\t%u.\n", updateEntryCount);
+	printf("\nThe total memory access is :\t%lu.\n", tFib.memory_access);
+	printf("The total number of Trie node is :\t%d.\n", tFib.allNodeCount);
+	printf("The total number of solid Trie node is :\t%u.\n", tFib.solidNodeCount);
+	printf("The total number of updated routing items is :\t%u.\n", updateEntryCount);
 	
 	// /*tFib.outputPortMapping(portMapFile3);
 	// tFib.OutputTrie(tFib.m_pTrie, newPortfile3, oldPortfile3);*/

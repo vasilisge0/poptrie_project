@@ -500,6 +500,7 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
 void ipv6_test(char * filename)
 {
     //init
+    printf("in ipv6 test\n");
 
     FILE *fp = fopen(filename,"r");
     if (fp == NULL)
