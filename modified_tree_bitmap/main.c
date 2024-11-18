@@ -562,8 +562,12 @@ void ipv6_test(char * filename)
 
 
     FILE *fp3;
+<<<<<<< HEAD
     printf("in fp3\n");
     fp3 = fopen("fib_rm_1M", "r");
+=======
+    fp3 = fopen(filename, "r");
+>>>>>>> a2e1c94 (Modified docker file to build all)
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
@@ -763,6 +767,16 @@ int main(int argc, char **argv)
     char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     ipv4_test(v4_filename);
+=======
+        printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
+        // exit(-1);
+    }
+    printf("We need specific files for these tests being run.\n");
+    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
+    // char * v4_filename = argv[1];
+    // char * v6_filename = argv[2];
+    // //ipv4_test(v4_filename);
+>>>>>>> a2e1c94 (Modified docker file to build all)
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
