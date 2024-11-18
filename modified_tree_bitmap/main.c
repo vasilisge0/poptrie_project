@@ -353,7 +353,6 @@ void test_lookup_valid_v6(struct lookup_trie_v6 *trie, FILE *fp)
     while((read = getline(&line, &len, fp)) != -1){
         line[strlen(line) - 1] = '\0';
         r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
-        r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
         if ( r == 0 ){
             printf("wrong format\n");
             continue;
@@ -527,29 +526,7 @@ void ipv6_test(char * filename)
 
 
     FILE *fp3;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
-=======
     fp3 = fopen(filename, "r");
->>>>>>> a2e1c94 (Modified docker file to build all)
-=======
-=======
->>>>>>> d28d6b4 (Modified docker file to build all)
-    fp3 = fopen(filename, "r");
-=======
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
->>>>>>> 6b39c79 (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
-<<<<<<< HEAD
->>>>>>> da76e7b (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
-=======
-=======
-    fp3 = fopen(filename, "r");
->>>>>>> e8be0ca (Modified docker file to build all)
->>>>>>> d28d6b4 (Modified docker file to build all)
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
@@ -737,20 +714,9 @@ void test_one_prefix(char * filename)
 
 
 int main(int argc, char **argv)
-int main(int argc, char **argv)
 {
     //fast_table_init();
     if (argc < 3) {
-<<<<<<< HEAD
-        printf("We need specific files for these tests being run.\n");
-        printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-        printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
-        // exit(-1);
-    }
-    char * v4_filename = argv[1];
-    char * v6_filename = argv[2];
-    ipv4_test(v4_filename);
-=======
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
         // exit(-1);
     }
@@ -759,7 +725,6 @@ int main(int argc, char **argv)
     // char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // //ipv4_test(v4_filename);
->>>>>>> a2e1c94 (Modified docker file to build all)
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
