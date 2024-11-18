@@ -21,6 +21,18 @@
         printf("\n");                            \
     } while ( 0 )
 
+#define TEST_FUNC_REQUIRES_FILENAME(str, func, param, ret)         \
+    do {                                         \
+        printf("%s: ", str);                     \
+        if (0 == func(param)) {                  \
+            printf("passed");                    \
+        } else {                                 \
+            printf("failed");                    \
+            ret = -1;                            \
+        }                                        \
+        printf("\n");                            \
+    } while (0)
+
 #define TEST_PROGRESS()                              \
     do {                                             \
         printf(".");                                 \
@@ -169,7 +181,7 @@ test_lookup2(void)
 }
 
 static int
-test_lookup_linx(void)
+test_lookup_linx(char * filename)
 {
     struct poptrie *poptrie;
     FILE *fp;
@@ -183,7 +195,7 @@ test_lookup_linx(void)
     u64 i;
 
     /* Load from the linx file */
-    fp = fopen("tests/linx-rib.20141217.0000-p46.txt", "r");
+    fp = fopen(filename, "r");
     if ( NULL == fp ) {
         return -1;
     }
@@ -243,7 +255,7 @@ test_lookup_linx(void)
 }
 
 static int
-test_lookup_linx_update(void)
+test_lookup_linx_update(char * filename)
 {
     struct poptrie *poptrie;
     FILE *fp;
@@ -263,9 +275,9 @@ test_lookup_linx_update(void)
     if ( NULL == poptrie ) {
         return -1;
     }
-
+    // "tests/linx-rib.20141217.0000-p52.txt"
     /* Load from the linx file */
-    fp = fopen("tests/linx-rib.20141217.0000-p52.txt", "r");
+    fp = fopen(filename, "r");
     if ( NULL == fp ) {
         return -1;
     }
@@ -304,7 +316,7 @@ test_lookup_linx_update(void)
     fclose(fp);
 
     /* Load from the update file */
-    fp = fopen("tests/linx-update.20141217.0000-p52.txt", "r");
+    fp = fopen(filename, "r");
     if ( NULL == fp ) {
         return -1;
     }
@@ -376,12 +388,20 @@ main(int argc, const char *const argv[])
 
     ret = 0;
 
+    if(argc < 2)
+    {
+        fprintf(stderr, "Usage: %s <linx-rib-file>\n", argv[0]);
+        return -1;
+    }
+    char * filename = (char *)argv[1];
+
+
     /* Run tests */
     TEST_FUNC("init", test_init, ret);
     TEST_FUNC("lookup", test_lookup, ret);
     TEST_FUNC("lookup2", test_lookup2, ret);
-    TEST_FUNC("lookup_fullroute", test_lookup_linx, ret);
-    TEST_FUNC("lookup_fullroute_update", test_lookup_linx_update, ret);
+    TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute", test_lookup_linx, filename, ret);
+    TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute_update", test_lookup_linx_update, filename, ret);
 
     return ret;
 }

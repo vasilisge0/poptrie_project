@@ -25,6 +25,18 @@
         printf("\n");                            \
     } while ( 0 )
 
+#define TEST_FUNC_REQUIRES_FILENAME(str, func, param, ret)         \
+    do {                                         \
+        printf("%s: ", str);                     \
+        if (0 == func(param)) {                  \
+            printf("passed");                    \
+        } else {                                 \
+            printf("failed");                    \
+            ret = -1;                            \
+        }                                        \
+        printf("\n");                            \
+    } while (0)
+
 #define TEST_PROGRESS()                              \
     do {                                             \
         printf(".");                                 \
@@ -143,7 +155,7 @@ test_lookup(void)
 }
 
 static int
-test_lookup_linx(void)
+test_lookup_linx(char * filename)
 {
     struct poptrie *poptrie;
     FILE *fp;
@@ -160,7 +172,7 @@ test_lookup_linx(void)
     u64 i;
 
     /* Load from the linx file */
-    fp = fopen("tests/linx-rib-ipv6.20141225.0000.p69.txt", "r");
+    fp = fopen(filename, "r");
     if ( NULL == fp ) {
         return -1;
     }
@@ -235,11 +247,17 @@ main(int argc, const char *const argv[])
     int ret;
 
     ret = 0;
+    if (2 > argc)
+    {
+        printf("Usage: %s <linx-file>\n", argv[0]);
+        return -1;
+    }
+    char * filename = (char *)argv[1];
 
     /* Run tests */
     TEST_FUNC("init6", test_init, ret);
     TEST_FUNC("lookup6", test_lookup, ret);
-    TEST_FUNC("lookup6_fullroute", test_lookup_linx, ret);
+    TEST_FUNC_REQUIRES_FILENAME("lookup6_fullroute", test_lookup_linx, filename, ret);
 
     return ret;
 }
