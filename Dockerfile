@@ -22,37 +22,7 @@ COPY . /app
 
 # Make sure the script is executable
 RUN chmod +x /app/make_all.sh
-<<<<<<< HEAD
-RUN /app/make_all.sh
-
 
 # Run the make_all.sh script
 CMD ["/bin/bash"]
-#CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
-=======
-
-# Run the make_all.sh script
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-CMD ["/bin/bash"]
 # CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
->>>>>>> baf404c (Included Dockerfile, made poptrie have command line arguments)
-=======
-# CMD ["/bin/bash"]
-CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
->>>>>>> a2e1c94 (Modified docker file to build all)
-=======
-CMD ["/bin/bash"]
-# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
->>>>>>> 81e1bfc (Included Dockerfile, made poptrie have command line arguments)
->>>>>>> b69aff6 (Included Dockerfile, made poptrie have command line arguments)
-=======
-CMD ["/bin/bash"]
-# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
->>>>>>> 81e1bfc (Included Dockerfile, made poptrie have command line arguments)
-=======
-# CMD ["/bin/bash"]
-CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
->>>>>>> e8be0ca (Modified docker file to build all)
->>>>>>> d28d6b4 (Modified docker file to build all)
