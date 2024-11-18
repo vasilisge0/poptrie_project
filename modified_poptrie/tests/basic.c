@@ -39,6 +39,18 @@ typedef uint32_t u32;
         printf("\n");                            \
     } while (0)
 
+#define TEST_FUNC_REQUIRES_FILENAME(str, func, param, ret)         \
+    do {                                         \
+        printf("%s: ", str);                     \
+        if (0 == func(param)) {                  \
+            printf("passed");                    \
+        } else {                                 \
+            printf("failed");                    \
+            ret = -1;                            \
+        }                                        \
+        printf("\n");                            \
+    } while (0)
+
 #define TEST_PROGRESS()                              \
     do {                                             \
         printf(".");                                 \
