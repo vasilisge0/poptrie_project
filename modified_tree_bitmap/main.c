@@ -359,6 +359,7 @@ void test_lookup_valid_v6(struct lookup_trie_v6 *trie, FILE *fp)
     while((read = getline(&line, &len, fp)) != -1){
         line[strlen(line) - 1] = '\0';
         r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
+        r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
         if ( r == 0 ){
             printf("wrong format\n");
             continue;
@@ -751,32 +752,9 @@ void test_one_prefix(char * filename)
 int main(int argc, char **argv)
 {
     //fast_table_init();
-    printf("test\n");
-    printf("argc: %d\n", argc);
-    if (argc < 2) {
-        printf("Usage: %s <v4_filename>\n", argv[0]);
-        // printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
-        // exit(-1);
-    }
-    printf("We need specific files for these tests being run.\n");
-    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-    char * v4_filename = argv[1];
-    // char * v6_filename = argv[2];
-    // char * v6_filename = argv[1];
-    printf("here\n");
-
-    double runtime = 0.0;
-    clock_t start_time;
-    clock_t end_time;
-    start_time = clock();
-    printf("before ipv4\n");
-    ipv4_test(v4_filename);
-    end_time = clock();
-    runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    printf("runtime: %lf\n", runtime);
-    printf("rate: %lf (Mlps)\n", 518230 / (runtime * 1e6));
-    // ipv6_test(v6_filename);
-    // test_one_prefix(v4_filename);
+    //ipv4_test();
+    ipv6_test();
+    //test_one_prefix();
 
     return 0;
 }
