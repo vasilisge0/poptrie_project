@@ -21,9 +21,9 @@ autoconf
 echo "Running automake with --add-missing..."
 automake --add-missing
 
-# echo "Creating build directory..."
-# mkdir -p build
-# cd build
+echo "Creating build directory..."
+mkdir -p build
+cd build
 
 echo "Configuring the build..."
 ../configure

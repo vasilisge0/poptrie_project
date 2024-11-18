@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Specify the sources
 add_executable(SAIL
     main.cpp
-    fib.cpp
+    Fib.cpp
 )
 
 # Include directories
