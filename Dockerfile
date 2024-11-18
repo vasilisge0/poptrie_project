@@ -21,9 +21,16 @@ COPY . /app
 
 # Make sure the script is executable
 RUN chmod +x /app/make_all.sh
+<<<<<<< HEAD
 RUN /app/make_all.sh
 
 
 # Run the make_all.sh script
 CMD ["/bin/bash"]
 #CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+=======
+
+# Run the make_all.sh script
+CMD ["/bin/bash"]
+# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+>>>>>>> baf404c (Included Dockerfile, made poptrie have command line arguments)
