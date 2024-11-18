@@ -353,6 +353,7 @@ void test_lookup_valid_v6(struct lookup_trie_v6 *trie, FILE *fp)
     while((read = getline(&line, &len, fp)) != -1){
         line[strlen(line) - 1] = '\0';
         r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
+        r = inet_pton(AF_INET6, line, (void *)&addr); // used to determine if the line in the file is an IPv6 address
         if ( r == 0 ){
             printf("wrong format\n");
             continue;
@@ -714,18 +715,18 @@ void test_one_prefix(char * filename)
 
 
 int main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     //fast_table_init();
-    if (argc < 2) {
+    if (argc < 3) {
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
-        printf("We need specific files for these tests being run.\n");
-        printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-        exit(-1);
+        // exit(-1);
     }
-    char * v4_filename = argv[1];
-    ipv4_test(v4_filename);
-
+    printf("We need specific files for these tests being run.\n");
+    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
+    // char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
+    // //ipv4_test(v4_filename);
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
