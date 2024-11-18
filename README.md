@@ -19,13 +19,11 @@ Make sure you are in the root directory of this repository and run:
 
 ```
 docker build -t networks_final .
-docker build -t networks_final .
 ```
 
 This will build the docker image. Then run the command below:
 
 ```
-docker run --rm -it networks_final
 docker run --rm -it networks_final
 ```
 
