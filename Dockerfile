@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     m4 \
     build-essential \
     git \
-    valgrind \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,5 +24,5 @@ COPY . /app
 RUN chmod +x /app/make_all.sh
 
 # Run the make_all.sh script
-# CMD ["/bin/bash"]
-CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+CMD ["/bin/bash"]
+# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
