@@ -12,22 +12,15 @@
 
 ### Build Instructions
 
-Currently, the developers of radix-tree and poptrie repos hard-coded an absolute path, but I will make it so the file is given as a command line argument to ensure ease of benchmarking.
-
-Make sure you install all of the tools necessary to use automake tools
-
+Make sure you are in the root directory of this repository and run:
 ```
-sudo apt update
-sudo apt install autoconf automake libtool m4 cmake build-essential
+docker build -t networks_final .
 ```
-
-#### The `make_all.sh` script
-
+This will build the docker image. Then run the command below:
 ```
-./make_all.sh
+docker run --rm -it networks_final
 ```
-
-Look inside the actual scripts to see how each individual repository is built.
+This will automatically run the `make_all.sh` script and drop you into the terminal where you can run tests.
 
 
 
