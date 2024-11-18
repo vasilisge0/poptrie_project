@@ -29,7 +29,11 @@ docker run --rm -it networks_final
 
 This will automatically run the `make_all.sh` script and drop you into the terminal where you can run tests.
 
+<<<<<<< HEAD
 ### Fix build issues
+=======
+
+>>>>>>> c6c389f (Update README.md)
 
 - Give 'execute permisions' to files make_all.sh, autogen_poptrie.sh, autogen_radix_tree.sh before
   building.
