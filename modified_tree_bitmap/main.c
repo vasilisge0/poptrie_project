@@ -552,8 +552,10 @@ void ipv6_test(char * filename)
     //print_prefix_v6(&trie, print_nhi);
 
     FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
+    FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
     if (fp2 != NULL)
         test_lookup_valid_v6(&trie,fp2);
+    fclose(fp2);
     fclose(fp2);
 
     mem_trie = mem_trie_v6(&trie);
@@ -562,39 +564,7 @@ void ipv6_test(char * filename)
 
 
     FILE *fp3;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
-=======
     fp3 = fopen(filename, "r");
->>>>>>> a2e1c94 (Modified docker file to build all)
-=======
-=======
->>>>>>> d28d6b4 (Modified docker file to build all)
-=======
->>>>>>> 7ad5a4c (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
-    fp3 = fopen(filename, "r");
-=======
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
->>>>>>> 6b39c79 (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
-<<<<<<< HEAD
->>>>>>> da76e7b (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
-=======
-=======
-    fp3 = fopen(filename, "r");
->>>>>>> e8be0ca (Modified docker file to build all)
-<<<<<<< HEAD
->>>>>>> d28d6b4 (Modified docker file to build all)
-=======
-=======
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
->>>>>>> 97560a4 (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
->>>>>>> 7ad5a4c (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
@@ -782,6 +752,7 @@ void test_one_prefix(char * filename)
 
 
 int main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
     //fast_table_init();
@@ -803,7 +774,6 @@ int main(int argc, char **argv)
     // char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // //ipv4_test(v4_filename);
->>>>>>> a2e1c94 (Modified docker file to build all)
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
