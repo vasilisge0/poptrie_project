@@ -531,6 +531,7 @@ void ipv6_test(char * filename)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     printf("in fp3\n");
     fp3 = fopen("fib_rm_1M", "r");
 =======
@@ -539,6 +540,8 @@ void ipv6_test(char * filename)
 =======
 =======
 >>>>>>> d28d6b4 (Modified docker file to build all)
+=======
+>>>>>>> 7ad5a4c (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
     fp3 = fopen(filename, "r");
 =======
     printf("in fp3\n");
@@ -550,7 +553,14 @@ void ipv6_test(char * filename)
 =======
     fp3 = fopen(filename, "r");
 >>>>>>> e8be0ca (Modified docker file to build all)
+<<<<<<< HEAD
 >>>>>>> d28d6b4 (Modified docker file to build all)
+=======
+=======
+    printf("in fp3\n");
+    fp3 = fopen("fib_rm_1M", "r");
+>>>>>>> 97560a4 (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
+>>>>>>> 7ad5a4c (Modifies benchmarking functions in modified_sail and modified_tree_bitmap to display runtimes.)
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
