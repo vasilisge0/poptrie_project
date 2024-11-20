@@ -756,7 +756,7 @@ int main(int argc, char **argv)
     //fast_table_init();
     if (argc < 2) {
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
-        // exit(-1);
+        exit(-1);
     }
     printf("We need specific files for these tests being run.\n");
     printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
