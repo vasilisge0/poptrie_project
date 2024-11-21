@@ -397,8 +397,6 @@ void rm_test_v6(FILE *fp, struct lookup_trie_v6 * trie)
         return;
     }
 
-
-
     while((read = getline(&line, &len, fp)) != -1){
         line[strlen(line) - 1] = '\0';
         r = inet_pton(AF_INET6, line, (void *)&addr);
@@ -518,10 +516,8 @@ void ipv6_test(char * filename)
     //print_prefix_v6(&trie, print_nhi);
 
     FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
-    FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
     if (fp2 != NULL)
         test_lookup_valid_v6(&trie,fp2);
-    fclose(fp2);
     fclose(fp2);
 
     mem_trie = mem_trie_v6(&trie);
