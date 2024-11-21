@@ -714,18 +714,18 @@ void test_one_prefix(char * filename)
 
 
 int main(int argc, char **argv)
-int main(int argc, char **argv)
 {
     //fast_table_init();
-    if (argc < 3) {
+    if (argc < 2) {
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
-        // exit(-1);
+        printf("We need specific files for these tests being run.\n");
+        printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
+        exit(-1);
     }
-    printf("We need specific files for these tests being run.\n");
-    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-    // char * v4_filename = argv[1];
+    char * v4_filename = argv[1];
+    ipv4_test(v4_filename);
+
     // char * v6_filename = argv[2];
-    // //ipv4_test(v4_filename);
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
