@@ -87,20 +87,24 @@ Take the following traffic patterns into consideration:
 \end{itemize}
 
 \subsection{Tables}
-\begin{center}
-    \begin{tabular}{|l|c|c|c|c|c|c|}
-        \hline
-        Configuration   & $s$ & \# inodes & \# leaves & Mem (MiB) & Compilation (ms) & Rate (Mlps) \\ 
-        \hline
-        Radix           & -   & & & & & \\ 
-        \hline                           
-        Poptrie-basic   & $0$ & & & & & \\  
-        \hline                           
-        Poptrie-leafvec & $0$ & & & & & \\
-        \hline
-        Poptrie         & $0$ & & & & & \\
-        \hline
-    \end{tabular}
-\end{center}
+\begin{table}
+    \begin{center}
+        \begin{tabular}{|l|c|c|c|c|c|c|}
+            \hline
+            Configuration   & $s$ & \# inodes & \# leaves & Mem (MiB) & Compilation (ms) & Rate (Mlps) \\ 
+            \hline
+            Radix           & -   & & & & & \\ 
+            \hline                           
+            Poptrie-basic   & $0$ & & & & & \\  
+            \hline                           
+            Poptrie-leafvec & $0$ & & & & & \\
+            \hline
+            Poptrie         & $0$ & & & & & \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{The compilation time, the number of nodes, the memory footprint, and the lookup rate for
+random with direct pointing (s = 0, 16, 18)}
+\end{table}
 
 \end{document}
