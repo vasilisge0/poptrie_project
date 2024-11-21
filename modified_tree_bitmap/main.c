@@ -552,10 +552,8 @@ void ipv6_test(char * filename)
     //print_prefix_v6(&trie, print_nhi);
 
     FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
-    FILE *fp2 = fopen(filename, "r"); // ret_5 // fib_rm
     if (fp2 != NULL)
         test_lookup_valid_v6(&trie,fp2);
-    fclose(fp2);
     fclose(fp2);
 
     mem_trie = mem_trie_v6(&trie);
