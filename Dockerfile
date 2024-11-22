@@ -22,6 +22,7 @@ COPY . /app
 
 # Make sure the script is executable
 RUN chmod +x /app/make_all.sh
+RUN /app/make_all.sh
 
 # Run the make_all.sh script
 CMD ["/bin/bash"]
