@@ -92,6 +92,9 @@ test_lookup(void)
     }
     TEST_PROGRESS();
 
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
+
     /* Route update */
     nexthop = (void *)5678;
     ret = poptrie_route_update(poptrie, 0x1c001200, 24, nexthop);
@@ -99,10 +102,20 @@ test_lookup(void)
         /* Failed to update */
         return -1;
     }
+
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
+
     if ( nexthop != poptrie_lookup(poptrie, 0x1c001203) ) {
         return -1;
     }
     TEST_PROGRESS();
+
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
+
+    // printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    // printf("(benchmark-msg) poptrie->leavesz: %d\n", poptrie->leaves);
 
     /* Route delete */
     ret = poptrie_route_del(poptrie, 0x1c001200, 24);
@@ -110,10 +123,17 @@ test_lookup(void)
         /* Failed to update */
         return -1;
     }
+
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
+
     if ( NULL != poptrie_lookup(poptrie, 0x1c001203) ) {
         return -1;
     }
     TEST_PROGRESS();
+
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
 
     /* Release */
     poptrie_release(poptrie);
@@ -174,8 +194,14 @@ test_lookup2(void)
     }
     TEST_PROGRESS();
 
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
+
     /* Release */
     poptrie_release(poptrie);
+
+    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
+    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
 
     return 0;
 }
