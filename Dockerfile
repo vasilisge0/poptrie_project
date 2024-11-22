@@ -29,7 +29,15 @@ CMD ["/bin/bash"]
 =======
 
 # Run the make_all.sh script
+<<<<<<< HEAD
+<<<<<<< HEAD
 CMD ["/bin/bash"]
 # CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
 # CMD ["/bin/bash"]
 CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+>>>>>>> a2e1c94 (Modified docker file to build all)
+=======
+CMD ["/bin/bash"]
+# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+>>>>>>> 81e1bfc (Included Dockerfile, made poptrie have command line arguments)
+>>>>>>> b69aff6 (Included Dockerfile, made poptrie have command line arguments)
