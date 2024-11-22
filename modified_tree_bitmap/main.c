@@ -562,8 +562,7 @@ void ipv6_test(char * filename)
 
 
     FILE *fp3;
-    printf("in fp3\n");
-    fp3 = fopen("fib_rm_1M", "r");
+    fp3 = fopen(filename, "r");
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
