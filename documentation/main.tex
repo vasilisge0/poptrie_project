@@ -164,25 +164,45 @@ random with direct pointing (s = 0, 16, 18)}
     \item RIB: routing information base
 \end{itemize}
 
+\newpage
 \subsection{Tables}
+
 \begin{table}
     \begin{center}
         \begin{tabular}{|l|c|c|c|c|c|c|}
             \hline
             Configuration   & $s$ & \# inodes & \# leaves & Mem (MiB) & Compilation (ms) & Rate (Mlps) \\ 
             \hline
-            Radix           & -   & & & & & \\ 
+            Radix           & -   & &  & & & \\ 
             \hline                           
-            Poptrie-basic   & $0$ & & & & & \\  
+            Poptrie-basic   & $0$ & & &  & & \\  
+                            & $16$ & & & $1.170.098.272$ & 26.7 (2.72) & \\  
+                            & $18$ & & & $1.585.723.488$ & 28.2 (3.61) & \\  
             \hline                           
             Poptrie-leafvec & $0$ & & & & & \\
+                            & $16$ & & & & & \\
+                            & $18$ & & & & & \\
             \hline
-            Poptrie         & $0$ & & & & & \\
+            Poptrie         & $0$  & & & & & \\
+                            & $16$ & & & & & \\
+                            & $18$ & & & & & \\
             \hline
         \end{tabular}
     \end{center}
     \caption{The compilation time, the number of nodes, the memory footprint, and the lookup rate for
 random with direct pointing (s = 0, 16, 18)}
 \end{table}
+\noindent
+\textbf{characteristics:}
+\begin{itemize}
+    \item poptrie-basic-s
+    \item poptrie-leafvec-s
+    \item poptrie-s (direct pointing)
+    \item \#inodes
+    \item \#leaves
+    \item memory footprint
+    \item compilation time (we measure this because
+    we reconstruct the tree. Does this include rebuilding the tree?)
+\end{itemize}
 
 \end{document}
