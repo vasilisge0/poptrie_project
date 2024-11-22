@@ -23,5 +23,12 @@ COPY . /app
 RUN chmod +x /app/make_all.sh
 
 # Run the make_all.sh script
+CMD ["/bin/bash"]
+#CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
+=======
+
+# Run the make_all.sh script
+CMD ["/bin/bash"]
+# CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
 # CMD ["/bin/bash"]
 CMD ["/bin/bash", "-c", "/app/make_all.sh && exec /bin/bash"]
