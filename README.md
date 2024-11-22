@@ -28,3 +28,10 @@ docker run --rm -it networks_final
 ```
 
 This will automatically run the `make_all.sh` script and drop you into the terminal where you can run tests.
+
+### Fix build issues
+
+- Give 'execute permisions' to files make_all.sh, autogen_poptrie.sh, autogen_radix_tree.sh before
+  building.
+
+- Change fib.cpp to Fib.cpp in modified_sail/CMakeLists.txt file, line 14
