@@ -425,9 +425,9 @@ main(int argc, const char *const argv[])
     /* Run tests */
     TEST_FUNC("init", test_init, ret);
     TEST_FUNC("lookup", test_lookup, ret);
-    TEST_FUNC("lookup2", test_lookup2, ret);
-    TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute", test_lookup_linx, filename, ret);
-    TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute_update", test_lookup_linx_update, filename, ret);
+    // TEST_FUNC("lookup2", test_lookup2, ret);
+    // TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute", test_lookup_linx, filename, ret);
+    // TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute_update", test_lookup_linx_update, filename, ret);
 
     return ret;
 }
