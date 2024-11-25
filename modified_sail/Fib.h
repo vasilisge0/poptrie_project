@@ -60,7 +60,7 @@ public:
 	struct chunkInfo			chunkUpdate24[CHUNK_MAX_24];	//the updating chunks in level 24
 	struct chunkInfo			chunkUpdate32[CHUNK_MAX_32];	//the updating chunks in level 32
 	/************************************End****************************************/
-
+	unsigned int nodes;
 
 	/********************************CDF stat************************************/
 	//unsigned int CBFInsertNum;

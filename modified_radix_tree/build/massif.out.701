@@ -1,0 +1,478 @@
+desc: (none)
+cmd: ./radix_test_basic ../tests/linx-rib.20141217.0000-p46.txt
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=163281
+mem_heap_B=3120
+mem_heap_extra_B=536
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3120 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2080 0x109DB5: _add (radix.c:126)
+  n1: 2080 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 2080 0x109322: test_lookup (basic.c:144)
+    n0: 2080 0x109322: main (basic.c:283)
+ n1: 1024 0x48D5BA3: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48E4CDF: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48E3F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+    n1: 1024 0x48E26D4: _IO_new_file_xsputn (fileops.c:1243)
+     n1: 1024 0x48E26D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+      n1: 1024 0x48CE00B: outstring_func (vfprintf-internal.c:239)
+       n1: 1024 0x48CE00B: __vfprintf_internal (vfprintf-internal.c:1517)
+        n1: 1024 0x498BC4A: __printf_chk (printf_chk.c:33)
+         n1: 1024 0x109249: printf (stdio2.h:112)
+          n0: 1024 0x109249: main (basic.c:282)
+ n0: 16 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=2
+#-----------
+time=53239034
+mem_heap_B=802408
+mem_heap_extra_B=199240
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=112013578
+mem_heap_B=1600072
+mem_heap_extra_B=398656
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=160774069
+mem_heap_B=2185288
+mem_heap_extra_B=544960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=218817415
+mem_heap_B=2993704
+mem_heap_extra_B=747064
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=302800071
+mem_heap_B=4059624
+mem_heap_extra_B=1013544
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=366897315
+mem_heap_B=5006120
+mem_heap_extra_B=1250168
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=414444683
+mem_heap_B=5680424
+mem_heap_extra_B=1418744
+mem_stacks_B=0
+heap_tree=detailed
+n2: 5680424 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 5674816 0x109DB5: _add (radix.c:126)
+  n2: 5674816 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 5674816 0x1096F2: test_lookup_linx_performance (basic.c:229)
+    n0: 5674816 0x1093B1: main (basic.c:284)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 5608 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=9
+#-----------
+time=490863363
+mem_heap_B=6820072
+mem_heap_extra_B=1703656
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=534536110
+mem_heap_B=7389736
+mem_heap_extra_B=1846072
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=600038932
+mem_heap_B=8254440
+mem_heap_extra_B=2062248
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=654609941
+mem_heap_B=8947784
+mem_heap_extra_B=2235584
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=731410816
+mem_heap_B=9926568
+mem_heap_extra_B=2480280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=777227930
+mem_heap_B=10506280
+mem_heap_extra_B=2625208
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=841366036
+mem_heap_B=11272616
+mem_heap_extra_B=2816792
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=887174736
+mem_heap_B=11817384
+mem_heap_extra_B=2952984
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=960464375
+mem_heap_B=12725704
+mem_heap_extra_B=3180064
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=1006280439
+mem_heap_B=13268328
+mem_heap_extra_B=3315720
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=1052089991
+mem_heap_B=13838280
+mem_heap_extra_B=3458208
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=1107061835
+mem_heap_B=14473704
+mem_heap_extra_B=3617064
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=1150922280
+mem_heap_B=14997096
+mem_heap_extra_B=3747912
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=1232804098
+mem_heap_B=15981928
+mem_heap_extra_B=3994120
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=1298306177
+mem_heap_B=16821576
+mem_heap_extra_B=4204032
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=1380185903
+mem_heap_B=18105000
+mem_heap_extra_B=4524888
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=1429313718
+mem_heap_B=18855176
+mem_heap_extra_B=4712432
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=1478442449
+mem_heap_B=19592776
+mem_heap_extra_B=4896832
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=1560325395
+mem_heap_B=20793320
+mem_heap_extra_B=5196968
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=1642212847
+mem_heap_B=21687208
+mem_heap_extra_B=5420440
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=1707719226
+mem_heap_B=22444008
+mem_heap_extra_B=5609640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=1756848559
+mem_heap_B=23040488
+mem_heap_extra_B=5758760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=1822353591
+mem_heap_B=23809928
+mem_heap_extra_B=5951120
+mem_stacks_B=0
+heap_tree=detailed
+n2: 23809928 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 23804320 0x109DB5: _add (radix.c:126)
+  n2: 23804320 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 23804320 0x1096F2: test_lookup_linx_performance (basic.c:229)
+    n0: 23804320 0x1093B1: main (basic.c:284)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 5608 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=32
+#-----------
+time=1904239890
+mem_heap_B=24724360
+mem_heap_extra_B=6179728
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=1953366809
+mem_heap_B=25294344
+mem_heap_extra_B=6322224
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=1990027791
+mem_heap_B=25709800
+mem_heap_extra_B=6426088
+mem_stacks_B=0
+heap_tree=detailed
+n2: 25709800 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 25704192 0x109DB5: _add (radix.c:126)
+  n2: 25704192 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 25704192 0x1096F2: test_lookup_linx_performance (basic.c:229)
+    n0: 25704192 0x1093B1: main (basic.c:284)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 5608 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=35
+#-----------
+time=2063341424
+mem_heap_B=26784168
+mem_heap_extra_B=6694680
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=2136659997
+mem_heap_B=27837992
+mem_heap_extra_B=6958136
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=2191648194
+mem_heap_B=28563624
+mem_heap_extra_B=7139544
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=2228309087
+mem_heap_B=29104072
+mem_heap_extra_B=7274656
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=2283297015
+mem_heap_B=29906120
+mem_heap_extra_B=7475168
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=2356605855
+mem_heap_B=30806568
+mem_heap_extra_B=7700280
+mem_stacks_B=0
+heap_tree=detailed
+n2: 30806568 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 30800960 0x109DB5: _add (radix.c:126)
+  n2: 30800960 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 30800960 0x1096F2: test_lookup_linx_performance (basic.c:229)
+    n0: 30800960 0x1093B1: main (basic.c:284)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 5608 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=41
+#-----------
+time=2393266048
+mem_heap_B=31266504
+mem_heap_extra_B=7815264
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=2448255429
+mem_heap_B=31943240
+mem_heap_extra_B=7984448
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=2521573652
+mem_heap_B=32913192
+mem_heap_extra_B=8226936
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=2576558496
+mem_heap_B=33789320
+mem_heap_extra_B=8445968
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=2613217954
+mem_heap_B=34395400
+mem_heap_extra_B=8597488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=2686535600
+mem_heap_B=35508904
+mem_heap_extra_B=8875864
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=2741521943
+mem_heap_B=36304744
+mem_heap_extra_B=9074824
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=2796514349
+mem_heap_B=37037288
+mem_heap_extra_B=9257960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=2869831595
+mem_heap_B=38050632
+mem_heap_extra_B=9511296
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=2906494934
+mem_heap_B=38531240
+mem_heap_extra_B=9631448
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=1270316787947
+mem_heap_B=38781480
+mem_heap_extra_B=9694008
+mem_stacks_B=0
+heap_tree=peak
+n2: 38781480 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 38775872 0x109DB5: _add (radix.c:126)
+  n2: 38775872 0x109DB5: radix_tree_add (radix.c:161)
+   n1: 38775872 0x1096F2: test_lookup_linx_performance (basic.c:229)
+    n0: 38775872 0x1093B1: main (basic.c:284)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 5608 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=52
+#-----------
+time=1270353447412
+mem_heap_B=9464008
+mem_heap_extra_B=2364640
+mem_stacks_B=0
+heap_tree=empty

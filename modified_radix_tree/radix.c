@@ -28,6 +28,8 @@
 
 #define BIT_TEST(k, b)  (((uint8_t *)(k))[(b) >> 3] & (0x80 >> ((b) & 0x7)))
 
+unsigned long long bytes = 0;
+
 /*
  * Initialize the data structure for radix tree
  */
@@ -127,6 +129,7 @@ _add(struct radix_tree_node **cur, uint8_t *key, int prefixlen, void *data,
         if ( NULL == new ) {
             return -1;
         }
+	bytes += sizeof(struct radix_tree_node);
         memset(new, 0, sizeof(struct radix_tree_node));
         *cur = new;
     }
@@ -135,10 +138,12 @@ _add(struct radix_tree_node **cur, uint8_t *key, int prefixlen, void *data,
         /* The current node is the point to add the data */
         if ( (*cur)->valid ) {
             /* Already exists */
-            return -1;
+            //return -1;
+	    return 0;
         }
         (*cur)->valid = 1;
         (*cur)->data = data;
+	bytes += sizeof(*data);
         return 0;
     } else {
         /* Check the corresponding bit */

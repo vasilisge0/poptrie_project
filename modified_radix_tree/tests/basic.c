@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <inttypes.h>
+#include <x86intrin.h>
 
 /* Macro for testing */
 #define TEST_FUNC(str, func, ret)                \
@@ -174,6 +175,25 @@ test_lookup(void)
     return 0;
 }
 
+int max(int a, int b){
+	if(a > b) return a;
+	return b;
+}
+
+int depth(struct radix_tree_node* root){
+	if(root == NULL){
+		return 0;
+	}
+	return(max(depth(root->left), depth(root->right))+1);
+}
+
+int count(struct radix_tree_node* root){
+	if(root == NULL){
+		return 0;
+	}
+	return(count(root->left)+count(root->right)+1);
+}
+
 static int
 test_lookup_linx_performance(char * filename)
 {
@@ -195,12 +215,15 @@ test_lookup_linx_performance(char * filename)
     /* Load from the linx file */
     fp = fopen(filename, "r");
     if ( NULL == fp ) {
+	printf("File could not be opened.\n");
         return -1;
     }
 
     /* Initialize */
+    t0 = getmicrotime();
     rt = radix_tree_init(NULL);
     if ( NULL == rt ) {
+	printf("Tree could not be initialized.\n");
         return -1;
     }
 
@@ -214,6 +237,7 @@ test_lookup_linx_performance(char * filename)
                      &prefix[2], &prefix[3], &prefixlen, &nexthop[0],
                      &nexthop[1], &nexthop[2], &nexthop[3]);
         if ( ret < 0 ) {
+	    printf("Bad entry\n");
             return -1;
         }
 
@@ -235,16 +259,24 @@ test_lookup_linx_performance(char * filename)
         }
         i++;
     }
+    t1 = getmicrotime();
+    printf(" Compilation time (s): %lf\n", (t1-t0));
+    printf("Depth: %d\n", depth(rt->root));
+    printf("Node count: %d\n", count(rt->root));
+    printf("Bytes used: %u\n", bytes);
+
+    unsigned long long cycles = 0;
 
     t0 = getmicrotime();
-
-    res = 0;
     for ( i = 0; i < 0x100000000LL; i++ ) {
         if ( 0 == i % 0x10000000ULL ) {
             TEST_PROGRESS();
         }
         a = xor128();
+    	unsigned long long start = __rdtsc();
         res ^= (uint64_t)radix_tree_lookup(rt, (uint8_t *)&a);
+    	unsigned long long end = __rdtsc();
+	cycles += end-start;
     }
     t1 = getmicrotime();
 
@@ -252,6 +284,7 @@ test_lookup_linx_performance(char * filename)
 
     printf("Result[0]: %lf ns/lookup\n", (t1 - t0)/i * 1000000000);
     printf("Result[1]: %lf Mlps\n", 1.0 * i / (t1 - t0) / 1000000);
+    printf("Cycles per lookup: %u\n", cycles/i);
 
     /* Release */
     radix_tree_release(rt);

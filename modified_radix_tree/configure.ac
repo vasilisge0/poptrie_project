@@ -6,10 +6,10 @@
 #      Hirochika Asai  <asai@jar.jp>
 #
 
-AC_PREREQ(2.59)
-AC_INIT([radix-tree], [0.1.0], [asai@jar.jp])
+AC_PREREQ([2.71])
+AC_INIT([radix-tree],[0.1.0],[asai@jar.jp])
 AC_CONFIG_SRCDIR([radix.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([subdir-objects])
 AC_SUBST(SUBDIRS)
