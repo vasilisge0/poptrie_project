@@ -27,6 +27,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+extern unsigned long long bytes;
+
 /*
  * Node data structure of radix tree
  */

@@ -43,7 +43,7 @@ CFib::CFib(void)
 	m_pTrie->newPort = PORT_MAX;
 
 	/********************************End******************************/
-
+	nodes = 1;
 
 	/*********************************Trie Table*************************************/
 	sailTableInit();	// 2014-05-09
@@ -168,6 +168,7 @@ CFib::~CFib(void)
 //creat new node 
 void CFib::CreateNewNode(FibTrie* &pTrie)
 {
+	nodes += 1;
 	pTrie= (struct FibTrie*)malloc(FIBLEN);
 
 	//initial
@@ -397,7 +398,7 @@ unsigned int CFib::BuildFibFromFile(string sFileName)
 				if(((lPrefix << yi) & HIGHTBIT) == HIGHTBIT) insert_B[yi]='1';
 				else insert_B[yi]='0';
 			}
-			//printf("%s\/%d\t%d\n",insert_C,iPrefixLen,iNextHop);
+			//printf("/%d\t%d\n",iPrefixLen,iNextHop);
 
 			if (iPrefixLen < 8) {
 				//printf("%d-%d; ", iPrefixLen, iNextHop);
@@ -702,6 +703,7 @@ bool CFib::isTheRange(unsigned int prefixLen, unsigned int visitedNodeNum)
 
 void CFib::Update(int insertport, char *insert_C, int operation_type, char* sprefix)
 {
+	//printf("prefix: %s port: %d insertC: %s %d\n", sprefix, insertport, insert_C, (int)strlen(insert_C));
 	//indicating to insertion, changing or deletion.
 	int operation = -9;
 
@@ -716,7 +718,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 
 	int prefixLen = (int)strlen(insert_C);
 
-	if (prefixLen < 8) {	
+	if (prefixLen < 8 || prefixLen > 32) {	
 		return;
 	}
 
@@ -733,6 +735,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 	{
 		memory_access ++;
 
+		//printf("%d\n", i);
 		if ('0' == insert_C[i])
 		{
 			if (NULL== insertNode->lchild)
@@ -814,6 +817,8 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 		}
 	}
 
+	//printf("A\n");
+
 	if(_DELETE != operation_type)		// it is not deletion
 	{
 		if (0 == insertNode->oldPort) {		//insertion
@@ -838,6 +843,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 		operation = _DELETE;
 	}
 
+	//printf("B\n");
 
 	int updateNumber = 0; 
 	unsigned int origPrefix = btod(insert_C);
@@ -878,10 +884,12 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 
 	if (operation == _INSERT) {
 
+		//printf("C\n");
 		insertNode->oldPort = insertport;
 		insertNode->newPort = insertport;
 
 		if (IfNewBornNode) {		//beyond the outline
+			//printf("D\n");
 			struct subLevelPushArg sArg;
 			sArg.bornStatus = bornStatus;
 			sArg.chunkID_24 = -1;
@@ -917,7 +925,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 					system("pause");
 				}
 			}
-
+			
 			if (levelNode16 && levelNode16->newPort != 0) {
 				subTrieLevelPushing(levelNode16, levelNode16->newPort, prefixLevel16, &sArg);
 			}
@@ -927,8 +935,9 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 			else {//do level-pushing
 				subTrieLevelPushing(insertNode, insertNode->oldPort, origPrefix, &sArg);
 				printf("newBorneNode Error!!!\n");
+				//printf("%s %d\n", sprefix, insertport);
 			}
-
+			
 			if (bornStatus == NB_16 || bornStatus == NB_BOTH) {
 				memcpy(&levelTable24->nexthop[chunkUpdate24[0].chunk_id << 8], chunkUpdate24[0].nexthop, sizeof(chunkUpdate24[0].nexthop));
 			}
@@ -938,6 +947,8 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 			}
 		}
 		else if (IsLeaf(insertNode) && (insertNode->nodeLevel == 16 || insertNode->nodeLevel == 24 || insertNode->nodeLevel == 32))  {//Ò¶×Ó½Úµã
+			//printf("E\n");
+			
 			updateNumber = 1;			// leaf node
 
 			if(insertNode->nodeLevel == 16) {
@@ -951,6 +962,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 			}
 		}
 		else if (!IsLeaf(insertNode)) {		// internal node
+			//printf("F\n");
 			ifSubTrieUpdate = true;
 			updateNumber = subTrieUpdate(insertNode, insertport, origPrefix, true, &stuArg);		//updating the sub-trie
 		}
@@ -972,8 +984,12 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 		updateNumber = subTrieUpdate(insertNode, default_oldport, origPrefix, true, &stuArg);		//updating the sub-trie
 	}
 
+	//printf("G\n");
+	return;
+
 	if (ifSubTrieUpdate) {
 		if (stuArg.segLevel == 16) {
+			printf("I\n");
 			memcpy(&levelTable16->element[origPrefix << stuArg.length], &segmentUpdate16.nexthop[(origPrefix << stuArg.length) & 255], (sizeof(short) << stuArg.length));
 
 			for (unsigned int i = 1; i <= chunkUpdateNum24; i++) {
@@ -985,17 +1001,23 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 			}
 		}
 		else if (stuArg.segLevel == 24) {
+			printf("J\n");
+			//Seg fault
+			//printf("%s %d\n", sprefix, insertport);
 			memcpy(&levelTable24->nexthop[(segmentUpdate24.chunk_id << 8) + ((origPrefix << stuArg.length) & 255)], &segmentUpdate24.nexthop[(origPrefix << stuArg.length) & 255], (PORT_LEN << stuArg.length));
 
+			printf("L\n");
 			for (unsigned int i = 1; i <= chunkUpdateNum32; i++) {
 				memcpy(&levelTable32->nexthop[chunkUpdate32[i].chunk_id << 8], chunkUpdate32[i].nexthop, sizeof(chunkUpdate32[i].nexthop));
 			}
 		}
 		else {
+			printf("K\n");
 			memcpy(&levelTable32->nexthop[(segmentUpdate32.chunk_id << 8) + ((origPrefix << stuArg.length) & 255)], &segmentUpdate32.nexthop[(origPrefix << stuArg.length) & 255], (PORT_LEN << stuArg.length));
 		}
 	}
 
+	printf("H\n");
 	if (!IfNewBornNode && (updateNumber != ((1 << stuArg.length) + (chunkUpdateNum24 << 8) + (chunkUpdateNum32 << 8)))) {
 		cout << "Update Error!\tType:" << operation_type << "\t" << sprefix << "\t" << insertport<<"\t" << updateNumber << ":\t" << (1 << stuArg.length) << "\t"<< (chunkUpdateNum24 << 8) << "\t" << (chunkUpdateNum32 << 8)<< endl;
 	}
@@ -1059,7 +1081,7 @@ void CFib::ytTriePortTest(FibTrie* pTrie)
 
 	// leaf node, newport == 0
 	if((level == 16  || level == 24 || level == 32) && IsLeaf(pTrie) && pTrie->newPort == 0) {
-		printf("The leaf node with newport = 0\n");
+		//printf("The leaf node with newport = 0\n");
 	}
 
 	// oldport!=newport

@@ -1,0 +1,3 @@
+/home/ed3brute/poptrie_project/modified_sail/build/CMakeFiles/SAIL.dir
+/home/ed3brute/poptrie_project/modified_sail/build/CMakeFiles/edit_cache.dir
+/home/ed3brute/poptrie_project/modified_sail/build/CMakeFiles/rebuild_cache.dir

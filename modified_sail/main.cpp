@@ -8,7 +8,8 @@
 #include <string.h>
 #include <time.h>
 //#include <conio.h>
-
+#include <chrono>
+#include <x86intrin.h>
 
 #define IP_LEN		32
 
@@ -195,6 +196,13 @@ void help () {
 	system ("pause");
 }
 
+unsigned int depth(FibTrie* root){
+	if(root == NULL){
+		return 0;
+	}
+	return max(depth(root->lchild), depth(root->rchild))+1;
+}
+
 // Levelpushing Trie Update
 unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 {
@@ -208,6 +216,7 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 	int 				operate_type;
 	int					readlines = 0;
 	unsigned long long	updatetimeused = 0;
+	unsigned long long	rdtsc_time = 0;
 
 	long				yearmonthday=0;						//an integer to record year, month, day
 	long				hourminsec=0;						//an integer to record hour, minute, second
@@ -219,14 +228,17 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 	long				DelNum_old=0;
 	long				readlines_old=0;
 
-	int64_t frequence,privious,privious1;
+	//int64_t frequence,privious,privious1;
 	//if(!QueryPerformanceFrequency(&frequence)) return 0;
-	
-	for (int jjj = 1; jjj <= UpdateFileCount; jjj++)
+	//auto frequence = std::chrono::high_resolution_clock::now();
+
+	//for (int jjj = 1; jjj <= UpdateFileCount; jjj++)
+	for (int jjj = 1; jjj <= 1; jjj++)
 	{
 		char strName[20];
 		memset(strName, 0, sizeof(strName));
-		sprintf(strName, "updates%d.txt", jjj);
+		//sprintf(strName, "updates%d.txt", jjj);
+		sprintf(strName, sFileName.c_str(), jjj);
 
 		ifstream fin(strName);
 		if (!fin)
@@ -316,11 +328,17 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 				else
 				{
 					//QueryPerformanceCounter(&privious); 
-					printf("\t\t%d-%d; ", iPrefixLen, iNextHop);
+					auto privious = std::chrono::high_resolution_clock::now();
+					unsigned long long start = __rdtsc();
+					//printf("\t\t%d-%d; ", iPrefixLen, iNextHop);
 					tFib->Update(iNextHop, insert_C, operate_type, sPrefix);
 
 					// QueryPerformanceCounter(&privious1);
+					unsigned long long end = __rdtsc();
+					auto privious1 = std::chrono::high_resolution_clock::now();
 					// updatetimeused += 1000000*(privious1.QuadPart-privious.QuadPart)/frequence.QuadPart;
+					updatetimeused += std::chrono::duration_cast<std::chrono::microseconds>(privious1-privious).count();
+					rdtsc_time += end-start;
 				}
 			}
 		}
@@ -328,6 +346,9 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 	}
 
 	printf("\tupdate performance: readline=%u\ttime=%uus\n\tspeed=%.7f Mups\n",readlines,updatetimeused, readlines/(updatetimeused+0.0));
+	printf("\tCycles per update (RDTSC): %u\n", rdtsc_time/readlines);
+	printf("\tCycles per update (Time): %u\n", updatetimeused/sysconf(_SC_CLK_TCK));
+	printf("\tDepth: %u\n", depth(tFib->m_pTrie));
 	return readlines;
 }
 
@@ -477,11 +498,20 @@ void test(int argc, char** argv)
 	unsigned int iEntryCount = 0;
 	unsigned int updateEntryCount = 0;
 
-	iEntryCount = tFib.BuildFibFromFile(ribFile);
+	//printf("%d\n", tFib.nodes);
+	//printf("\tDepth: %u\n", depth(tFib.m_pTrie));
+	
+	auto one = std::chrono::high_resolution_clock::now();
+	iEntryCount = tFib.BuildFibFromFile(argv[2]);
+	auto two = std::chrono::high_resolution_clock::now();
 
-
+	//printf("%d\n", tFib.nodes);
+	printf("\tCompilation time: %uus\n", std::chrono::duration_cast<std::chrono::microseconds>(two-one).count());
+	printf("\tDepth: %u\n", depth(tFib.m_pTrie));
 
 	tFib.ytGetNodeCounts();
+	printf("\tBytes Used: %u\n", tFib.allNodeCount * sizeof(struct FibTrie));
+	
 	printf("\nThe total number of Trie node is :\t%u.\n",tFib.allNodeCount);
 	printf("The total number of solid Trie node is :\t%d.\n", tFib.solidNodeCount);
 	printf("The total number of routing items in FRib file is :\t%u.\n", iEntryCount);
@@ -512,7 +542,7 @@ void test(int argc, char** argv)
 	/******************************************Stage 3******************************************/
 	printf("\n\n\t\tStage Three: The Second Round Update\n");
 	//update FibTrie stage
-	updateEntryCount = BFLevelPushingTrieUpdate(updateFile, &tFib);
+	updateEntryCount = BFLevelPushingTrieUpdate(argv[1], &tFib);
 	tFib.ytGetNodeCounts();
 	printf("\nThe total memory access is :\t%llu.\n", tFib.memory_access);
 	printf("The total number of Trie node is :\t%d.\n", tFib.allNodeCount);
@@ -543,7 +573,7 @@ void test(int argc, char** argv)
 	//tFib.checkTable(tFib.m_pTrie, 0);
 
 	printf("\n\n************************sail Lookup Correct Test************************\n");
-	sailDetectForFullIp(&tFib);
+	//sailDetectForFullIp(&tFib);
 	printf("***********************************End***********************************\n");
 
 	printf("\nMission Complete, Press any key to continue...\n");
@@ -561,7 +591,8 @@ int main (int argc, char** argv) {
 	}
 	else if (argc == 3)
 	{
-		sailPerformanceTest(argv[1], argv[2]);
+		//sailPerformanceTest(argv[1], argv[2]);
+		test(argc, argv);
 	}
 	return 0;
 }
