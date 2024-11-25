@@ -10,6 +10,8 @@
 //#include <conio.h>
 #include <chrono>
 #include <x86intrin.h>
+#include <chrono>
+#include <x86intrin.h>
 
 #define IP_LEN		32
 
@@ -348,6 +350,9 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 	}
 
 	printf("\tupdate performance: readline=%u\ttime=%uus\n\tspeed=%.7f Mups\n",readlines,updatetimeused, readlines/(updatetimeused+0.0));
+	printf("\tCycles per update (RDTSC): %u\n", rdtsc_time/readlines);
+	printf("\tCycles per update (Time): %u\n", updatetimeused/sysconf(_SC_CLK_TCK));
+	printf("\tDepth: %u\n", depth(tFib->m_pTrie));
 	// printf("\tCycles per update (RDTSC): %u\n", rdtsc_time/readlines);
 	// printf("\tCycles per update (Time): %u\n", updatetimeused/sysconf(_SC_CLK_TCK));
 	// printf("\tDepth: %u\n", depth(tFib->m_pTrie));
@@ -590,11 +595,11 @@ void test(int argc, char** argv)
 	// // system("pause");
 	// tFib.checkTable(tFib.m_pTrie, 0);
 
-	// printf("\n\n************************sail Lookup Correct Test************************\n");
-	// sailDetectForFullIp(&tFib);
-	// printf("***********************************End***********************************\n");
-// 
-	// printf("\nMission Complete, Press any key to continue...\n");
+	printf("\n\n************************sail Lookup Correct Test************************\n");
+	//sailDetectForFullIp(&tFib);
+	printf("***********************************End***********************************\n");
+
+	printf("\nMission Complete, Press any key to continue...\n");
 	//system("pause");
 }
 
@@ -609,8 +614,7 @@ int main (int argc, char** argv) {
 	}
 	else if (argc == 3)
 	{
-		printf("before performance test\n");
-		// sailPerformanceTest(argv[1], argv[2]);
+		//sailPerformanceTest(argv[1], argv[2]);
 		test(argc, argv);
 	}
 	return 0;
