@@ -4,6 +4,7 @@
 *.fls
 *.log
 *.gz
-massif_out
-heaptrack_out
+massif_out/
+heaptrack_out/
 documentation/figures/
+plots/
