@@ -346,9 +346,9 @@ unsigned int BFLevelPushingTrieUpdate(string sFileName,CFib *tFib)
 	}
 
 	printf("\tupdate performance: readline=%u\ttime=%uus\n\tspeed=%.7f Mups\n",readlines,updatetimeused, readlines/(updatetimeused+0.0));
-	printf("\tCycles per update (RDTSC): %u\n", rdtsc_time/readlines);
-	printf("\tCycles per update (Time): %u\n", updatetimeused/sysconf(_SC_CLK_TCK));
-	printf("\tDepth: %u\n", depth(tFib->m_pTrie));
+	// printf("\tCycles per update (RDTSC): %u\n", rdtsc_time/readlines);
+	// printf("\tCycles per update (Time): %u\n", updatetimeused/sysconf(_SC_CLK_TCK));
+	// printf("\tDepth: %u\n", depth(tFib->m_pTrie));
 	return readlines;
 }
 
