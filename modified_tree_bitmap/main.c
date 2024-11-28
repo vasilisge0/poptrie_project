@@ -752,6 +752,8 @@ int main(int argc, char **argv)
 {
 
     //fast_table_init();
+    printf("test\n");
+    printf("argc: %d\n", argc);
     if (argc < 2) {
         printf("Usage: %s <v4_filename>\n", argv[0]);
         // printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
@@ -762,11 +764,13 @@ int main(int argc, char **argv)
     char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // char * v6_filename = argv[1];
+    printf("here\n");
 
     double runtime = 0.0;
     clock_t start_time;
     clock_t end_time;
     start_time = clock();
+    printf("before ipv4\n");
     ipv4_test(v4_filename);
     end_time = clock();
     runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
