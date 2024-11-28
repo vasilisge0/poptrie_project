@@ -762,9 +762,18 @@ int main(int argc, char **argv)
     char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // char * v6_filename = argv[1];
+
+    double runtime = 0.0;
+    clock_t start_time;
+    clock_t end_time;
+    start_time = clock();
     ipv4_test(v4_filename);
+    end_time = clock();
+    runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("runtime: %lf\n", runtime);
+    printf("rate: %lf (Mlps)\n", 518230 / (runtime * 1e6));
     // ipv6_test(v6_filename);
-    //test_one_prefix();
+    // test_one_prefix(v4_filename);
 
     return 0;
 }
