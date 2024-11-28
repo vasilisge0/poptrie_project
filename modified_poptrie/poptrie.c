@@ -42,11 +42,13 @@ poptrie_init(struct poptrie *poptrie, int sz1, int sz0)
     }
 
     /* Allocate the nodes and leaves */
+    printf("num-nodes: %d\n", (1 << sz1));
     poptrie->nodes = malloc(sizeof(poptrie_node_t) * (1 << sz1));
     if ( NULL == poptrie->nodes ) {
         poptrie_release(poptrie);
         return NULL;
     }
+    printf("num-leaves: %d\n", (1 << sz0));
     poptrie->leaves = malloc(sizeof(poptrie_leaf_t) * (1 << sz0));
     if ( NULL == poptrie->leaves ) {
         poptrie_release(poptrie);
