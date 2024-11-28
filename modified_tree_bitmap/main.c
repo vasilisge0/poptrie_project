@@ -253,7 +253,7 @@ int load_routes(struct lookup_trie *trie, FILE *fp)
             //if (key == 4835){
             //    printf("here\n");
             //}
-            printf("->(load-routes) line %s", line);
+            // printf("->(load-routes) line %s", line);
             insert_prefix(trie, ip, cidr,(struct next_hop_info*)(key));
             //hash_trie_insert(ip,cidr,(struct next_hop_info*)(key));
 
@@ -264,7 +264,7 @@ int load_routes(struct lookup_trie *trie, FILE *fp)
             key ++;
         }
         else {
-            printf("(load-routes) line %s", line);
+            // printf("(load-routes) line %s", line);
             ip = inet_network(line);
             printf(", ip: %lu\n", ip);
         }
@@ -677,15 +677,15 @@ void ipv4_test(char * filename)
 
     init_lookup_trie(&trie);
 
-    //load_routes(&trie, fp);
-    load_fib(&trie, fp);
+    load_routes(&trie, fp);
+    // load_fib(&trie, fp);
 
     level_memory(&trie);
     test_lookup_valid(&trie, filename);
     //mem_alloc_stat_v6();
 
     //rewind(fp);
-    //del_routes(&trie,fp);
+    del_routes(&trie,fp);
 
     //print_all_prefix(&trie, print_nhi);
     //test_random_ips(&trie);
@@ -761,9 +761,18 @@ int main(int argc, char **argv)
     char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // char * v6_filename = argv[1];
+
+    double runtime = 0.0;
+    clock_t start_time;
+    clock_t end_time;
+    start_time = clock();
     ipv4_test(v4_filename);
+    end_time = clock();
+    runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("runtime: %lf\n", runtime);
+    printf("rate: %lf (Mlps)\n", 518230 / (runtime * 1e6));
     // ipv6_test(v6_filename);
-    //test_one_prefix();
+    // test_one_prefix(v4_filename);
 
     return 0;
 }
