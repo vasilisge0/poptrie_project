@@ -169,23 +169,24 @@ random with direct pointing (s = 0, 16, 18)}
 
 \begin{table}
     \begin{center}
-        \begin{tabular}{|l|c|c|c|c|c|c|}
+        \begin{tabular}{|l|c|c|c|c|c|c|c|}
             \hline
-            Configuration   & $s$ & \# inodes & \# leaves & Mem (MiB) & Compilation (ms) & Rate (Mlps) \\ 
+            Configuration   & $s$ & \# inodes & \# leaves & Mem (MiB) & Init (s) & Rate (Mlps) & CPU cycles \\ 
             \hline
-            Radix           & -   & &  & & & \\ 
-            \hline                           
-            Poptrie-basic   & $0$ & & &  & & \\  
-                            & $16$ & & & $1.170.098.272$ & 26.7 (2.72) & \\  
-                            & $18$ & & & $1.585.723.488$ & 28.2 (3.61) & \\  
-            \hline                           
-            Poptrie-leafvec & $0$ & & & & & \\
-                            & $16$ & & & & & \\
-                            & $18$ & & & & & \\
+            Radix           & -   & &  & & & & \\ 
+            % \hline                           
+            % Poptrie-basic   & $0$  & & & & & & \\
+                            % & $16$ & & & & & & \\
+                            % & $18$ & & & & & & \\
+            % \hline                           
+            % Poptrie-leafvec & $0$ & & & & & & \\
+                            % & $16$ & & & & & & \\
+                            % & $18$ & & & & & & \\
+                            % 124575
             \hline
-            Poptrie         & $0$  & & & & & \\
-                            & $16$ & & & & & \\
-                            & $18$ & & & & & \\
+            Poptrie         & $2$ & $36,412$ & $63,527$ & $7.575$ & $2.16$ & $71.91$ & $45$ \\  
+                            & $16$ & $14,664$ & $56,367$ &  & $1.79$ & $285,7$ & \\  
+                            & $18$ & $14,664$ & $56,367$ & $6.12$ & $1.80$ & $316.8$ & \\  
             \hline
         \end{tabular}
     \end{center}
@@ -193,6 +194,35 @@ random with direct pointing (s = 0, 16, 18)}
 random with direct pointing (s = 0, 16, 18)}
 \end{table}
 \noindent
+\begin{table}
+    \begin{center}
+        \begin{tabular}{|l|c|c|c|c|c|c|}
+            \hline
+            Configuration  & $s$ & total memory & routes & trie memory & loads & stores \\
+            \hline
+            Poptrie  & $2$ & $94.6$ & $55.5$ & $39.1$ & $7.450$ & $0.124$ \\
+              & $16$ &  & routes & trie memory & loads & stores \\
+              & $18$ &  & routes & trie memory & loads & stores \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{The total allocated memory, memory used for the routing table, memory footprint, load accesses, store accesses for poptrie with
+ leaf compression, direct pointing and s = 0, 16, 18 (MiB)}
+\end{table}
+\begin{figure}
+\begin{center}
+    \includegraphics[scale=0.26]{figures/massif_poptrie_s2.png}
+\end{center}
+\end{figure}
+% \begin{table}
+%     \begin{center}
+%         \begin{tabular}{|l|c|c|}
+%             \hline
+%             Configuration  & direct-ptr & alt-ptr \\
+%             \hline
+%         \end{tabular}
+%     \end{center}
+% \end{table}
 \textbf{characteristics:}
 \begin{itemize}
     \item poptrie-basic-s
@@ -203,6 +233,12 @@ random with direct pointing (s = 0, 16, 18)}
     \item memory footprint
     \item compilation time (we measure this because
     we reconstruct the tree. Does this include rebuilding the tree?)
+\end{itemize}
+
+\subsection{Poptrie specification}
+\begin{itemize}
+    \item FIB: forwarding information base
+    \item RIB: routing information base
 \end{itemize}
 
 \end{document}
