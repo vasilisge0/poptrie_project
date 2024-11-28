@@ -266,7 +266,7 @@ int load_routes(struct lookup_trie *trie, FILE *fp)
         else {
             // printf("(load-routes) line %s", line);
             ip = inet_network(line);
-            printf(", ip: %lu\n", ip);
+            printf(", line: %s, ip: %lu\n", line, ip);
         }
         
         i++;
@@ -677,15 +677,15 @@ void ipv4_test(char * filename)
 
     init_lookup_trie(&trie);
 
-    load_routes(&trie, fp);
-    // load_fib(&trie, fp);
+    // load_routes(&trie, fp);
+    load_fib(&trie, fp);
 
     level_memory(&trie);
     test_lookup_valid(&trie, filename);
     //mem_alloc_stat_v6();
 
     //rewind(fp);
-    del_routes(&trie,fp);
+    // del_routes(&trie,fp);
 
     //print_all_prefix(&trie, print_nhi);
     //test_random_ips(&trie);
@@ -751,6 +751,8 @@ void test_one_prefix(char * filename)
 int main(int argc, char **argv)
 {
     //fast_table_init();
+    printf("test\n");
+    printf("argc: %d\n", argc);
     if (argc < 2) {
         printf("Usage: %s <v4_filename>\n", argv[0]);
         // printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
@@ -761,11 +763,13 @@ int main(int argc, char **argv)
     char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
     // char * v6_filename = argv[1];
+    printf("here\n");
 
     double runtime = 0.0;
     clock_t start_time;
     clock_t end_time;
     start_time = clock();
+    printf("before ipv4\n");
     ipv4_test(v4_filename);
     end_time = clock();
     runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
