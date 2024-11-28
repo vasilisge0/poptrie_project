@@ -28,10 +28,12 @@ buddy_init(struct buddy *bs, int sz, int level, int bsz)
     }
 
     /* Heads */
+    printf("(budy) level: %d\n", level);
     buddy = malloc(sizeof(u32) * level);
     if ( NULL == buddy ) {
         return -1;
     }
+    printf("bsz * (1 << sz): %d\n", bsz * (1 << sz));
     /* Pre allocated nodes */
     blocks = malloc(bsz * (1 << sz));
     if ( NULL == blocks ) {
@@ -74,6 +76,10 @@ buddy_init(struct buddy *bs, int sz, int level, int bsz)
     bs->buddy = buddy;
     bs->blocks = blocks;
     bs->b = b;
+    printf("bs->level: %d\n", bs->level);
+    printf("buddy[0]: %d\n", buddy[0]);
+    printf("buddy[1]: %d\n", buddy[1]);
+    printf("buddy[2]: %d\n", buddy[2]);
 
     return 0;
 }
