@@ -645,8 +645,8 @@ void ipv4_test(char * filename)
     //load_routes(&trie, fp);
     load_fib(&trie, fp);
 
-    level_memory(&trie);
-    test_lookup_valid(&trie, filename);
+    // level_memory(&trie);
+    // test_lookup_valid(&trie, filename);
     //mem_alloc_stat_v6();
 
     //rewind(fp);
@@ -722,9 +722,9 @@ int main(int argc, char **argv)
     }
     printf("We need specific files for these tests being run.\n");
     printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-    // char * v4_filename = argv[1];
+    char * v4_filename = argv[1];
     // char * v6_filename = argv[2];
-    // //ipv4_test(v4_filename);
+    ipv4_test(v4_filename);
     // ipv6_test(v6_filename);
     //test_one_prefix();
 
