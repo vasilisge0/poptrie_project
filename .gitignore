@@ -6,5 +6,6 @@
 *.gz
 massif_out/
 heaptrack_out/
+perf_out/
 documentation/figures/
 plots/
