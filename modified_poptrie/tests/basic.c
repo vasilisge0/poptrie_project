@@ -433,6 +433,7 @@ test_lookup_linx_update(char * filename)
         return -1;
     }
 
+    clock_t start_time = clock();
     /* Load the full route */
     i = 0;
     while ( !feof(fp) ) {
@@ -471,6 +472,9 @@ test_lookup_linx_update(char * filename)
         }
         i++;
     }
+    clock_t end_time = clock();
+    double runtime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("update runtime: %lf\n", runtime);
 
     /* Close */
     fclose(fp);
