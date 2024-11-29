@@ -121,6 +121,7 @@ unsigned int btod(char *bstr)
 }
 
 void sailDetectForFullIp(CFib *tFib) {
+	printf("in sailDetectForFullIp\n");
 	int nonRouteStatic=0;
 
 	int hop1=0;
@@ -149,6 +150,7 @@ void sailDetectForFullIp(CFib *tFib) {
 	printf("\t\ttotal\t%.0f\t\n", zhishuI);
 	printf("\t\tlength\tcycles\t\tpercent\tnexthop\n");
 
+	printf("zhishuI: %lf\n", zhishuI);
 	for (long long k=0; k < zhishuI; k++)
 	{
 		memcpy(old_tmp, new_tmp, IP_LEN);
@@ -446,13 +448,29 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 	// QueryPerformanceCounter(&privious);
 	// printf("\tfrequency=%u\n",frequence.QuadPart);//2825683
 
+
+	unsigned long long start = __rdtsc();
+	auto t0 = std::chrono::high_resolution_clock::now();
+	printf("TRACE_READ: %d", TRACE_READ);
 	for (register int j=0;j<10000;j++)
 	{
 		for (register int i=0;i<TRACE_READ;i++)
 		{
+			if ((i < 2) && (j < 2))
+			{
+				printf("i: %d, j: %d\n", i, j);
+			}
 			LPMPort=tFib.sailLookup(traffic[i]);
 		}
 	}
+	auto t1 = std::chrono::high_resolution_clock::now();
+	double runtime = (double)std::chrono::duration_cast<std::chrono::seconds>(t1-t0).count();
+	unsigned long long end = __rdtsc();
+	unsigned long long rdtsc_time = end - start;
+
+
+	printf("	runtime: %lf\n", runtime);
+ 	printf("	Cycles per update (RDTSC): %llu\n", rdtsc_time);
 
 	// QueryPerformanceCounter(&privious1);
 	// long long Lookuptime=1000000*(privious1.QuadPart-privious.QuadPart)/frequence.QuadPart;
@@ -569,14 +587,14 @@ void test(int argc, char** argv)
 	printf("The total number of invalid update items is :\t%u.\n", tFib.invalid);
 	printf("The detailed invalid items:\n\tinvalid0 = %u\tinvalid1 = %u\tinvalid2 = %u\n", tFib.invalid0, tFib.invalid1, tFib.invalid2);
 
-	//system("pause");
-	//tFib.checkTable(tFib.m_pTrie, 0);
+	// system("pause");
+	tFib.checkTable(tFib.m_pTrie, 0);
 
 	printf("\n\n************************sail Lookup Correct Test************************\n");
-	//sailDetectForFullIp(&tFib);
+	sailDetectForFullIp(&tFib);
 	printf("***********************************End***********************************\n");
-
-	printf("\nMission Complete, Press any key to continue...\n");
+// 
+	// printf("\nMission Complete, Press any key to continue...\n");
 	//system("pause");
 }
 
@@ -591,8 +609,11 @@ int main (int argc, char** argv) {
 	}
 	else if (argc == 3)
 	{
-		//sailPerformanceTest(argv[1], argv[2]);
-		test(argc, argv);
+		printf("before performance test\n");
+		sailPerformanceTest(argv[1], argv[2]);
+		// test(argc, argv);
 	}
 	return 0;
+	
 }
+
