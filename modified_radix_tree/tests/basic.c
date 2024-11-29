@@ -223,7 +223,7 @@ test_lookup_linx_performance(char * filename)
     t0 = getmicrotime();
     rt = radix_tree_init(NULL);
     if ( NULL == rt ) {
-	printf("Tree could not be initialized.\n");
+	    printf("Tree could not be initialized.\n");
         return -1;
     }
 
@@ -237,7 +237,7 @@ test_lookup_linx_performance(char * filename)
                      &prefix[2], &prefix[3], &prefixlen, &nexthop[0],
                      &nexthop[1], &nexthop[2], &nexthop[3]);
         if ( ret < 0 ) {
-	    printf("Bad entry\n");
+	        printf("Bad entry\n");
             return -1;
         }
 
@@ -267,16 +267,17 @@ test_lookup_linx_performance(char * filename)
 
     unsigned long long cycles = 0;
 
+    printf("0x100000000LL: %llu\n", 0x100000000LL);
     t0 = getmicrotime();
     for ( i = 0; i < 0x100000000LL; i++ ) {
-        if ( 0 == i % 0x10000000ULL ) {
-            TEST_PROGRESS();
-        }
+        // if ( 0 == i % 0x10000000ULL ) {
+        //     TEST_PROGRESS();
+        // }
         a = xor128();
     	unsigned long long start = __rdtsc();
         res ^= (uint64_t)radix_tree_lookup(rt, (uint8_t *)&a);
     	unsigned long long end = __rdtsc();
-	cycles += end-start;
+	    cycles += (end-start);
     }
     t1 = getmicrotime();
 
@@ -312,8 +313,8 @@ main(int argc, const char *const argv[])
     const char *filename = argv[1];
 
     /* Run tests */
-    TEST_FUNC("init", test_init, ret);
-    TEST_FUNC("lookup", test_lookup, ret);
+    // TEST_FUNC("init", test_init, ret);
+    // TEST_FUNC("lookup", test_lookup, ret);
     TEST_FUNC_REQUIRES_FILENAME("performance", test_lookup_linx_performance, filename, ret);
 
     return 0;

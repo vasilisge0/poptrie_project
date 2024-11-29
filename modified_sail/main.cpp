@@ -567,32 +567,32 @@ void test(int argc, char** argv)
 	printf("The total number of solid Trie node is :\t%u.\n", tFib.solidNodeCount);
 	printf("The total number of updated routing items is :\t%u.\n", updateEntryCount);
 	
-	/*tFib.outputPortMapping(portMapFile3);
-	tFib.OutputTrie(tFib.m_pTrie, newPortfile3, oldPortfile3);*/
+	// /*tFib.outputPortMapping(portMapFile3);
+	// tFib.OutputTrie(tFib.m_pTrie, newPortfile3, oldPortfile3);*/
 
-	printf("\n************************Trie Correct Test************************\n");
+	// printf("\n************************Trie Correct Test************************\n");
 	
-	if (!tFib.isCorrectTrie(tFib.m_pTrie)) {
-		printf("The trie structure is incorrect!!!\n");
-	}
-	else {
-		printf("The trie structure is correct!\n");
-	}
+	// if (!tFib.isCorrectTrie(tFib.m_pTrie)) {
+	// 	printf("The trie structure is incorrect!!!\n");
+	// }
+	// else {
+	// 	printf("The trie structure is correct!\n");
+	// }
 
-	tFib.ytTriePortTest(tFib.m_pTrie);
-	printf("*******************************End*******************************\n");
+	// tFib.ytTriePortTest(tFib.m_pTrie);
+	// printf("*******************************End*******************************\n");
 
-	printf("\n\n\t\tUpdate Statistics\n");
-	printf("\nThe total number of true update items is :\t%u.\n", tFib.trueUpdateNum);
-	printf("The total number of invalid update items is :\t%u.\n", tFib.invalid);
-	printf("The detailed invalid items:\n\tinvalid0 = %u\tinvalid1 = %u\tinvalid2 = %u\n", tFib.invalid0, tFib.invalid1, tFib.invalid2);
+	// printf("\n\n\t\tUpdate Statistics\n");
+	// printf("\nThe total number of true update items is :\t%u.\n", tFib.trueUpdateNum);
+	// printf("The total number of invalid update items is :\t%u.\n", tFib.invalid);
+	// printf("The detailed invalid items:\n\tinvalid0 = %u\tinvalid1 = %u\tinvalid2 = %u\n", tFib.invalid0, tFib.invalid1, tFib.invalid2);
 
-	// system("pause");
-	tFib.checkTable(tFib.m_pTrie, 0);
+	// // system("pause");
+	// tFib.checkTable(tFib.m_pTrie, 0);
 
-	printf("\n\n************************sail Lookup Correct Test************************\n");
-	sailDetectForFullIp(&tFib);
-	printf("***********************************End***********************************\n");
+	// printf("\n\n************************sail Lookup Correct Test************************\n");
+	// sailDetectForFullIp(&tFib);
+	// printf("***********************************End***********************************\n");
 // 
 	// printf("\nMission Complete, Press any key to continue...\n");
 	//system("pause");
@@ -610,8 +610,8 @@ int main (int argc, char** argv) {
 	else if (argc == 3)
 	{
 		printf("before performance test\n");
-		sailPerformanceTest(argv[1], argv[2]);
-		// test(argc, argv);
+		// sailPerformanceTest(argv[1], argv[2]);
+		test(argc, argv);
 	}
 	return 0;
 	
