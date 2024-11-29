@@ -561,16 +561,15 @@ void test(int argc, char** argv)
 
 	//system("pause");
 
-	/******************************************Stage 3******************************************/
-	printf("\n\n\t\tStage Three: The Second Round Update\n");
-	//update FibTrie stage
-	updateEntryCount = BFLevelPushingTrieUpdate(argv[1], &tFib);
-	tFib.ytGetNodeCounts();
+	// /******************************************Stage 3******************************************/
+	// printf("\n\n\t\tStage Three: The Second Round Update\n");
+	// //update FibTrie stage
+	// updateEntryCount = BFLevelPushingTrieUpdate(argv[1], &tFib);
+	// tFib.ytGetNodeCounts();
 	// printf("\nThe total memory access is :\t%llu.\n", tFib.memory_access);
-	printf("\nThe total memory access is :\t%lu.\n", tFib.memory_access);
-	printf("The total number of Trie node is :\t%d.\n", tFib.allNodeCount);
-	printf("The total number of solid Trie node is :\t%u.\n", tFib.solidNodeCount);
-	printf("The total number of updated routing items is :\t%u.\n", updateEntryCount);
+	// printf("The total number of Trie node is :\t%d.\n", tFib.allNodeCount);
+	// printf("The total number of solid Trie node is :\t%u.\n", tFib.solidNodeCount);
+	// printf("The total number of updated routing items is :\t%u.\n", updateEntryCount);
 	
 	// /*tFib.outputPortMapping(portMapFile3);
 	// tFib.OutputTrie(tFib.m_pTrie, newPortfile3, oldPortfile3);*/
@@ -614,7 +613,8 @@ int main (int argc, char** argv) {
 	}
 	else if (argc == 3)
 	{
-		//sailPerformanceTest(argv[1], argv[2]);
+		printf("before performance test\n");
+		// sailPerformanceTest(argv[1], argv[2]);
 		test(argc, argv);
 	}
 	return 0;

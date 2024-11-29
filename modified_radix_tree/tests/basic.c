@@ -224,7 +224,6 @@ test_lookup_linx_performance(char * filename)
     t0 = getmicrotime();
     rt = radix_tree_init(NULL);
     if ( NULL == rt ) {
-	printf("Tree could not be initialized.\n");
 	    printf("Tree could not be initialized.\n");
         return -1;
     }
@@ -239,7 +238,6 @@ test_lookup_linx_performance(char * filename)
                      &prefix[2], &prefix[3], &prefixlen, &nexthop[0],
                      &nexthop[1], &nexthop[2], &nexthop[3]);
         if ( ret < 0 ) {
-	    printf("Bad entry\n");
 	        printf("Bad entry\n");
             return -1;
         }
@@ -270,6 +268,7 @@ test_lookup_linx_performance(char * filename)
 
     unsigned long long cycles = 0;
 
+    printf("0x100000000LL: %llu\n", 0x100000000LL);
     printf("0x100000000LL: %llu\n", 0x100000000LL);
     t0 = getmicrotime();
     for ( i = 0; i < 0x100000000LL; i++ ) {
