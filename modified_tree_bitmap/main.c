@@ -37,97 +37,27 @@ int del_routes(struct lookup_trie *trie, FILE *fp)
     while((read = getline(&line, &len, fp)) != -1){
         if (i & 0x01) {
 
-            //if (i ==111433){
-            //    printf("here\n");
-            //}
             cidr = atoi(line);
             org_ip = ip;
             ip = ip & (0xffffffff << (32-cidr));
-            //if (ip == 0x7a99ff00){
-            //    printf("here\n");
-            //}
-            //insert_prefix(ip,cidr,(struct next_hop_info*)(key));
-            //if (i == 107081) {
-            //    printf("here\n");
-            //}
             delete_prefix(trie, ip, cidr, NULL);
             
             struct next_hop_info *a = search(trie, org_ip);
             key = (uint32_t)(uint64_t)a;
-            if (key != 0) {
-                //printf("line %s, cidr %d key %d, org_ip %x\n", buf, cidr, key,org_ip );
-            }
             if (prefix_exist(trie, ip, cidr)){
                 printf("prefix exist ! error\n");
             }
-
-
-            //hash_trie_insert(ip,cidr,(struct next_hop_info*)(key));
-
-            //if (i ==111433){
-            //    //printf("here\n");
-	    //    break;
-            //}
-            //key ++;
         }
         else {
-            //printf("line %s", line);
             ip = inet_network(line);
             strcpy(buf, line);
         }
         
         i++;
-        //if (i == 8179) {
-        //    printf("here\n");
-        //}
 
     }
     printf("del routes %d\n", i/2 );
-    rewind(fp);
-    
-    while((read = getline(&line, &len, fp)) != -1){
-        if (i & 0x01) {
-
-            //if (i ==111433){
-            //    printf("here\n");
-            //}
-            cidr = atoi(line);
-            org_ip = ip;
-            ip = ip & (0xffffffff << (32-cidr));
-            //if (ip == 0x7a99ff00){
-            //    printf("here\n");
-            //}
-            //insert_prefix(ip,cidr,(struct next_hop_info*)(key));
-            //if (org_ip == 0x77c25d00) {
-            //    printf("here\n");
-            //}
-            //delete_prefix(ip, cidr);
-            
-            struct next_hop_info *a = search(trie, org_ip);
-            key = (uint32_t)(uint64_t)a;
-            if (key != 0) {
-                printf("line %s, cidr %d key %d, org_ip %x\n", buf, cidr, key,org_ip );
-            }
-            //hash_trie_insert(ip,cidr,(struct next_hop_info*)(key));
-
-            //if (i ==111433){
-            //    //printf("here\n");
-	    //    break;
-            //}
-            //key ++;
-        }
-        else {
-            //printf("line %s", line);
-            ip = inet_network(line);
-            strcpy(buf, line);
-        }
-        
-        i++;
-        //if (i == 8179) {
-        //    printf("here\n");
-        //}
-
-    }
+    rewind(fp);    
 
     return i/2 ;
 
@@ -245,22 +175,10 @@ int load_routes(struct lookup_trie *trie, FILE *fp)
     while((read = getline(&line, &len, fp)) != -1){
         if (i & 0x01) {
 
-            //if (i ==111433){
-            //    printf("here\n");
-            //}
             cidr = atoi(line);
             ip = ip & (0xffffffff << (32-cidr));
-            //if (key == 4835){
-            //    printf("here\n");
-            //}
-            // printf("->(load-routes) line %s", line);
             insert_prefix(trie, ip, cidr,(struct next_hop_info*)(key));
             //hash_trie_insert(ip,cidr,(struct next_hop_info*)(key));
-
-            //if (i ==111433){
-            //    //printf("here\n");
-	    //    break;
-            //}
             key ++;
         }
         else {
@@ -674,8 +592,6 @@ void ipv4_test(char * filename)
     struct lookup_trie trie;
     memset(&trie, 0, sizeof(struct lookup_trie));
 
-    printf("ipv4 test\n");
-
     init_lookup_trie(&trie);
 
     // load_routes(&trie, fp);
@@ -748,28 +664,23 @@ void test_one_prefix(char * filename)
 
 }
 
-
 int main(int argc, char **argv)
 {
 
     //fast_table_init();
     if (argc < 2) {
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
+        printf("We need specific files for these tests being run.\n");
+        printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
         // exit(-1);
     }
-    printf("We need specific files for these tests being run.\n");
-    printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
     char * v4_filename = argv[1];
-    // char * v6_filename = argv[2];
     ipv4_test(v4_filename);
+
+    // char * v6_filename = argv[2];
     // ipv6_test(v6_filename);
+
     //test_one_prefix();
 
     return 0;
 }
-
-// #endif
-
-
-
-
