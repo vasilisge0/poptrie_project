@@ -1,4 +1,4 @@
-cd modified_poptrie/build/;
+cd ../modified_poptrie/build/;
 # valgrind --tool=massif ./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
 # valgrind --tool=massif --time-unit=ms --alloc-fn=buddy_init --pages-as-heap=no --detailed-freq=1 --max-snapshots=1000 ./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
 # valgrind --tool=massif --:xtree-leak=yes ./poptrie_test_basic ../tests/ipv4.rib20141217.0000.txt;
@@ -10,7 +10,7 @@ cd modified_poptrie/build/;
 ./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
 
 # ./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
- cd ../../;
+ cd ../../tests;
 
 
       # exec heaptrack "$progdir/$program" ${1+"$@"}
