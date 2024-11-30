@@ -108,7 +108,7 @@ int del_routes_v6(struct lookup_trie_v6 *trie, FILE *fp)
         struct next_hop_info * ret = search_v6(trie, &ip);
         uint64_t key = (uint64_t)ret;
         if ( key != 0) {
-            //printf("overlapped or error %s key %d ret %d\n", line, i, key);
+            printf("overlapped or error %s key %d ret %d\n", line, i, key);
         }
 
         r = prefix_exist_v6(trie, ip, cidr);
@@ -178,20 +178,14 @@ int load_routes(struct lookup_trie *trie, FILE *fp)
             cidr = atoi(line);
             ip = ip & (0xffffffff << (32-cidr));
             insert_prefix(trie, ip, cidr,(struct next_hop_info*)(key));
-            //hash_trie_insert(ip,cidr,(struct next_hop_info*)(key));
             key ++;
         }
         else {
-            // printf("(load-routes) line %s", line);
             ip = inet_network(line);
             printf(", line: %s, ip: %lu\n", line, ip);
         }
         
         i++;
-        //if (i == 8179) {
-        //    printf("here\n");
-        //}
-
     }
     printf("load routes %d\n", i/2 );
     return i/2 ;
@@ -246,8 +240,6 @@ int load_routes_v6(struct lookup_trie_v6 *trie, FILE *fp)
     }
     printf("load routes %d\n", i);
     return i ;
-    
-
 }
 #if 0
 void load_one_route(char *ip_str, uint32_t cidr)
@@ -345,10 +337,10 @@ void rm_test_v6(FILE *fp, struct lookup_trie_v6 * trie)
 
     while (i>=0){
         nhi = search_v6(trie, set + i);
-        //if (nhi == NULL) {
-        //    printf("error\n");
-        //    printf("%d\n",i);
-        //}
+        if (nhi == NULL) {
+           printf("error\n");
+           printf("%d\n",i);
+        }
         i--;
     }
     clock_gettime(CLOCK_MONOTONIC, &tp_a);    
@@ -391,11 +383,6 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
         }
         else {
             ip = (ip1<<24) + (ip2<<16) + (ip3<<8) + ip4;
-            //printf("line %s", line);
-            // ip = inet_network(line);
-            // ip = inet_network("195.66.224.39");
-            // printf("line: %s -> %u\n", line, ip);
-            // ips[i/2] = ip;
             ips[i] = ip;
         }
         i++;
@@ -410,17 +397,10 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
     int cnt=0;
     for (i = 0; i< ip_cnt ;i++){
 
-        //if (ips[i] == 0x7a99ff00) {
-        //    printf("here\n");
-        //}
-        // struct next_hop_info *a = hash_trie_search(ips[i]);
         if (i < 10)
             printf("ips[%d]: %u / %lu\n", i, ips[i], ips[i]);
         struct next_hop_info *a = search(trie, ips[i]);
         uint32_t b = (uint32_t)(uint64_t)a;
-        // printf("b: %u, a: %u, key: %u\n", b, a, key);
-        // printf("key: %u\n", key);
-        // printf("b: %d, key: %d, i: %d, ips[i]: %d\n", b, key, i, (int)ips[i]);
         if (key < 10)
         {
             printf("key: %u, b: %u\n", key, b);
@@ -430,16 +410,8 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
         }
         else {
             printf("**** b: %d, key: %d\n", b, key);
-            //struct in_addr addr;
-            //addr.s_addr = htonl(array[i].test_ip);
-
-
-            // printf("search(0x%x); result %d; i  %d\n", ips[i], b ,i);
-            //printf("the truth is ip_test %s  key %d ip %x\n", inet_ntoa(addr),array[i].key*2, array[i].ip);
         }
-        //printf("search(0x%x);\n", array[i].ip);
 
-        //printf("search(0x%x); reulst %x\n", array[i].ip, b);
         key ++;
     }
 
@@ -451,7 +423,6 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
 
 void ipv6_test(char * filename)
 {
-    //init
     printf("in ipv6 test\n");
 
     FILE *fp = fopen(filename,"r");
@@ -484,9 +455,6 @@ void ipv6_test(char * filename)
     if (fp3 != NULL)
         rm_test_v6(fp3, &trie);
     fclose(fp3);
-
-
-
 
     //rewind(fp);
     //del_routes_v6(&trie,fp);
@@ -532,22 +500,13 @@ void test_random_ips(struct lookup_trie *trie, char * filename)
 
     while((read = getline(&line, &len, fp)) != -1){
         if (i & 0x01) {
-            //if (i == 201863){
-            //    printf("here\n");
-            //}
-            
-            //printf("cidr %d, key %d\n",array[i/2].cidr, array[i/2].key);
+            printf("cidr %d, key %d\n",array[i/2].cidr, array[i/2].key);
         }
         else {
             ip = inet_network(line);
             ips[i/2] = ip;
         }
-        //printf("line %s", line);
-        
         i++;
-        //if (i == 8179) {
-        //    printf("here\n");
-        //}
     }
     cnt = i/2;
 
@@ -567,8 +526,6 @@ void test_random_ips(struct lookup_trie *trie, char * filename)
 
     for (i=0;i<RAND_SIZE;i++){
         search(trie, random_ips[i]);
-        //hash_trie_search(random_ips[i]);
-        //compact_search(random_ips[i]);
     }
  
     clock_gettime(CLOCK_MONOTONIC, &tp_a);
@@ -650,8 +607,6 @@ void test_one_prefix(char * filename)
 
     for (i=0;i<RAND_SIZE;i++){
         search(&trie, ip);
-        //hash_trie_search(random_ips[i]);
-        //compact_search(random_ips[i]);
     }
  
     clock_gettime(CLOCK_MONOTONIC, &tp_a);
@@ -666,20 +621,18 @@ void test_one_prefix(char * filename)
 
 int main(int argc, char **argv)
 {
-
     //fast_table_init();
     if (argc < 2) {
         printf("Usage: %s <v4_filename> <v6_filename>\n", argv[0]);
         printf("We need specific files for these tests being run.\n");
         printf("Take a look at how IPv4 (Line 215) and IPv6 (Line 166) addresses are verified.\n");
-        // exit(-1);
+        exit(-1);
     }
     char * v4_filename = argv[1];
     ipv4_test(v4_filename);
 
     // char * v6_filename = argv[2];
     // ipv6_test(v6_filename);
-
     //test_one_prefix();
 
     return 0;
