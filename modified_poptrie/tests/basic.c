@@ -324,12 +324,12 @@ test_lookup_linx(char * filename, char* filename_out)
     int max_nodes = (1 << 19);
     int max_leaves = (1 << 22);
 
-    printf("\n                     build runtime: %lf\n", build_runtime);
+    printf("\n                       build runtime: %lf\n", build_runtime);
     printf("                      lookup runtime: %lf\n", runtime);
-    printf("                         num_lookups: %lf\n", num_lookups);
+    printf("                         num_lookups: %ld\n", (long int)num_lookups);
     printf("                    number of cycles: %llu\n", t1);
-    printf("                     number of nodes: %d / %d\n", node_count, max_nodes);
-    printf("                    number of leaves: %d / %d\n", leaf_count, max_leaves);
+    printf("                     number of nodes: %d / %d (%2.1lf\%)\n", node_count, max_nodes, 100 * (double)node_count / (double)max_nodes);
+    printf("                    number of leaves: %d / %d (%2.1lf\%)\n", leaf_count, max_leaves, 100 * (double)leaf_count / (double)max_leaves);
     printf("    memory footprint (based on tree): %d\n", memory_footprint);
     printf("                  lookup rate (Mlps): %lf\n", num_lookups / (runtime * 1e6));
 
@@ -346,7 +346,7 @@ test_lookup_linx(char * filename, char* filename_out)
     }
 
     printf("                   Writing output in: %s\n", filename_out);
-    fprintf(fp_out, "%llu\n%lf\n%lf\n%lf\n%d\n%d\n%d\n%d\n%d\n%llu\n", 0x100000000ULL, lookup_rate, lookup_runtime, build_runtime,
+    fprintf(fp_out, "poptrie\n%llu\n%lf\n%lf\n%lf\n%d\n%d\n%d\n%d\n%d\n%llu\n", 0x100000000ULL, lookup_rate, lookup_runtime, build_runtime,
         node_count, leaf_count, max_nodes, max_leaves, memory_footprint, t1);
     fclose(fp_out);
 
