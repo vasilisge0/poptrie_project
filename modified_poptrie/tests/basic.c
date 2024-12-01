@@ -8,9 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include<sys/time.h>
+#include <sys/time.h>
+#include <inttypes.h>
+#include <x86intrin.h>
+#include <x86intrin.h>
 
 #define BUDDY_EOL 0xffffffffUL
+#define BENCHMARK_ACTIVE 1
 
 typedef uint32_t u32;
 
@@ -110,9 +114,6 @@ test_lookup(void)
     }
     TEST_PROGRESS();
 
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
-
     /* Route update */
     nexthop = (void *)5678;
     ret = poptrie_route_update(poptrie, 0x1c001200, 24, nexthop);
@@ -121,19 +122,10 @@ test_lookup(void)
         return -1;
     }
 
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
-
     if ( nexthop != poptrie_lookup(poptrie, 0x1c001203) ) {
         return -1;
     }
     TEST_PROGRESS();
-
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
-
-    // printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    // printf("(benchmark-msg) poptrie->leavesz: %d\n", poptrie->leaves);
 
     /* Route delete */
     ret = poptrie_route_del(poptrie, 0x1c001200, 24);
@@ -142,16 +134,10 @@ test_lookup(void)
         return -1;
     }
 
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
-
     if ( NULL != poptrie_lookup(poptrie, 0x1c001203) ) {
         return -1;
     }
     TEST_PROGRESS();
-
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
 
     /* Release */
     poptrie_release(poptrie);
@@ -212,20 +198,14 @@ test_lookup2(void)
     }
     TEST_PROGRESS();
 
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
-
     /* Release */
     poptrie_release(poptrie);
-
-    printf("(benchmark-msg) poptrie->nodesz: %d\n", poptrie->nodesz);
-    printf("(benchmark-msg) poptrie->leafsz: %d\n", poptrie->leafsz);
 
     return 0;
 }
 
 static int
-test_lookup_linx(char * filename)
+test_lookup_linx(char * filename, char* filename_out)
 {
     struct poptrie *poptrie;
     FILE *fp;
@@ -251,18 +231,8 @@ test_lookup_linx(char * filename)
     }
     {
         u32* cnodes = poptrie->cnodes;
-        // printf("cnodes[0].level: %d\n", cnodes[0].level);
         int count = 0;
         poptrie_leaf_t* nodes = poptrie->leaves;
-        for (i = 0 ; i < 10; i++) {
-            // printf("cnodes[%d] == END: %d\n", i, (cnodes[i] == BUDDY_EOL));
-            // if ((int)nodes[i].base1 != 0) {
-                // printf("nodes[%d]: %d / %d\n", (int)i, (int)(nodes[i].leafvec), (int)(nodes[i].base1));
-                // count += 1;
-            // }
-            printf("node[%d]: %d\n", i, (int)nodes[i]);
-        }
-        printf("count: %d\n", count);
     }
 
     /* Load the full route */
@@ -282,7 +252,6 @@ test_lookup_linx(char * filename)
         if ( ret < 0 ) {
             return -1;
         }
-        // printf(" i: %d\n", i);
 
         /* Convert to u32 */
         addr1 = ((u32)prefix[0] << 24) + ((u32)prefix[1] << 16)
@@ -304,70 +273,82 @@ test_lookup_linx(char * filename)
         }
         i++;
     }
-    printf("compilation runtime: %lf\n", runtime);
+    double build_runtime = runtime;
     runtime = 0.0;
 
     int node_count = 0;
     u32* cnodes = poptrie->cnodes;
-    // printf("cnodes[0].level: %d\n", cnodes[0].level);
     int count = 0;
     poptrie_node_t* nodes = poptrie->nodes;
-    printf("test\n");
-    printf("(1 << 19): %d\n", (1 << 19));
     for (i = 0 ; i < (1 << 19) ; i++) {
-        // printf("cnodes[%d] == END: %d\n", i, (cnodes[i] == BUDDY_EOL));
         if (((int)nodes[i].base0 != 0) && ((int)nodes[i].base1 != 0)) {
             count += 1;
         }
     }
-    printf("nodes-count: %d\n", count);
     node_count = count;
     int leaf_count = 0;
     {
 
     u32* cnodes = poptrie->cnodes;
-    // printf("cnodes[0].level: %d\n", cnodes[0].level);
     int count = 0;
     poptrie_leaf_t* nodes = poptrie->leaves;
-    printf("test\n");
-    printf("(1 << 22): %d\n", (1 << 22));
     for (i = 0 ; i < (1 << 22) ; i++) {
-        // printf("cnodes[%d] == END: %d\n", i, (cnodes[i] == BUDDY_EOL));
-        // if (((int)nodes[i].base0 == 0) && ((int)nodes[i].base1 == 0)) {
-            // count += 1;
-        // }
-        // printf("node[%d]: %d\n", i, (int)nodes[i]);
         if ((int)nodes[i] != 0) {
             count += 1;
         }
     }
-    printf("leaves-count: %d\n", count);
     leaf_count = count;
     }
 
     start_time = clock();
-    // uint64_t t0 = rdtsc(); 
+    unsigned long long t0 = __rdtsc(); 
     for ( i = 0; i < 0x100000000ULL; i++ ) {
         if ( 0 == i % 0x10000000ULL ) {
             TEST_PROGRESS();
         }
         poptrie_lookup(poptrie, i);
-        // if (poptrie_lookup(poptrie, i)  != poptrie_rib_lookup(poptrie, i) ) {
-            // return -1;
-        // }
+
+#if BENCHMARK_ACTIVE != 1
+        if (poptrie_lookup(poptrie, i)  != poptrie_rib_lookup(poptrie, i) ) {
+            return -1;
+        }
+#endif
     }
-    // uint64_t t1 = rdtsc() - t0;
+    unsigned long long t1 = __rdtsc() - t0;
     end_time = clock();
     runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    double lookup_runtime = runtime;
     int memory_footprint = node_count * 24 + leaf_count*2;
     double num_lookups = (double)0x100000000ULL;
-    printf("num_lookups: %lf\n", num_lookups);
-    // printf("number of cycles: %d\n", (int) t1);
-    printf("runtime: %lf\n", runtime);
-    printf("memory_footprint: %d\n", memory_footprint);
-    printf("rate: %lf (Mlps)\n", num_lookups / (runtime * 1e6));
-    printf("0x100000000ULL: %llu\n", 0x100000000ULL);
+    double lookup_rate = num_lookups / (runtime * 1e6);
+    int max_nodes = (1 << 19);
+    int max_leaves = (1 << 22);
 
+    printf("\n                     build runtime: %lf\n", build_runtime);
+    printf("                      lookup runtime: %lf\n", runtime);
+    printf("                         num_lookups: %lf\n", num_lookups);
+    printf("                    number of cycles: %llu\n", t1);
+    printf("                     number of nodes: %d / %d\n", node_count, max_nodes);
+    printf("                    number of leaves: %d / %d\n", leaf_count, max_leaves);
+    printf("    memory footprint (based on tree): %d\n", memory_footprint);
+    printf("                  lookup rate (Mlps): %lf\n", num_lookups / (runtime * 1e6));
+
+    /* Write output to file. */
+    if (filename_out == NULL) {
+        perror("output filename is NULL\n");
+        exit(-1);
+    }
+
+    FILE* fp_out = fopen(filename_out, "w");
+    if (fp_out == NULL) {
+        perror("Error in opening output file.");
+        exit(-1);
+    }
+
+    printf("                   Writing output in: %s\n", filename_out);
+    fprintf(fp_out, "%llu\n%lf\n%lf\n%lf\n%d\n%d\n%d\n%d\n%d\n%llu\n", 0x100000000ULL, lookup_rate, lookup_runtime, build_runtime,
+        node_count, leaf_count, max_nodes, max_leaves, memory_footprint, t1);
+    fclose(fp_out);
 
     /* Release */
     poptrie_release(poptrie);
@@ -379,7 +360,7 @@ test_lookup_linx(char * filename)
 }
 
 static int
-test_lookup_linx_update(char * filename)
+test_lookup_linx_update(char* filename, char* filename_update, char * filename_out)
 {
     struct poptrie *poptrie;
     FILE *fp;
@@ -399,8 +380,9 @@ test_lookup_linx_update(char * filename)
     if ( NULL == poptrie ) {
         return -1;
     }
-    // "tests/linx-rib.20141217.0000-p52.txt"
+
     /* Load from the linx file */
+    /* Example: "tests/linx-rib.20141217.0000-p52.txt" */
     fp = fopen(filename, "r");
     if ( NULL == fp ) {
         return -1;
@@ -412,6 +394,7 @@ test_lookup_linx_update(char * filename)
         if ( !fgets(buf, sizeof(buf), fp) ) {
             continue;
         }
+
         ret = sscanf(buf, "%d.%d.%d.%d/%d %d.%d.%d.%d", &prefix[0], &prefix[1],
                      &prefix[2], &prefix[3], &prefixlen, &nexthop[0],
                      &nexthop[1], &nexthop[2], &nexthop[3]);
@@ -440,13 +423,13 @@ test_lookup_linx_update(char * filename)
     fclose(fp);
 
     /* Load from the update file */
-    fp = fopen(filename, "r");
+    fp = fopen(filename_update, "r");
     if ( NULL == fp ) {
         return -1;
     }
 
-    clock_t start_time = clock();
     /* Load the full route */
+    clock_t start_time = clock();
     i = 0;
     while ( !feof(fp) ) {
         if ( !fgets(buf, sizeof(buf), fp) ) {
@@ -476,7 +459,8 @@ test_lookup_linx_update(char * filename)
             /* Delete an entry */
             ret = poptrie_route_del(poptrie, addr1, prefixlen);
             if ( ret < 0 ) {
-                /* Ignore any errors */
+                /* Ignore any errors */ // Originally it was not handled;
+                return -1;              // Changed this to exit instead.
             }
         }
         if ( 0 == i % 1000 ) {
@@ -503,6 +487,7 @@ test_lookup_linx_update(char * filename)
     /* Release */
     poptrie_release(poptrie);
 
+
     return 0;
 }
 
@@ -513,23 +498,46 @@ int
 main(int argc, const char *const argv[])
 {
     int ret;
-
     ret = 0;
-    // sleep(1);
-    if(argc < 2)
+
+    if(argc < 3)
     {
         fprintf(stderr, "Usage: %s <linx-rib-file>\n", argv[0]);
         return -1;
     }
-    char * filename = (char *)argv[1];
 
+    /* Lookup test. */
+    if (argc == 3) {
+        char* filename = (char *)argv[1];
+        char* filename_out = (char *)argv[2];
+        int status = test_lookup_linx(filename, filename_out);
+        if (status == 0) {
+            printf("passed\n");
+        }
+        else if (status == -1) {
+            printf("failed\n");
+        }
+    }
+    /* Update test. */
+    else if (argc == 4) {
+        char* filename = (char *)argv[1];
+        char* filename_update = (char *)argv[2];
+        char* filename_out = (char *)argv[3];
+        int status = test_lookup_linx_update(filename, filename_update, filename_out);
+        if (status == 0) {
+            printf("passed\n");
+        }
+        else if (status == -1) {
+            printf("failed\n");
+        }
+    }
 
-    /* Run tests */
+    /* Other tests */
     // TEST_FUNC("init", test_init, ret);
     // TEST_FUNC("lookup", test_lookup, ret);
     // TEST_FUNC("lookup2", test_lookup2, ret);
     // TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute", test_lookup_linx, filename, ret);
-    TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute_update", test_lookup_linx_update, filename, ret);
+    // TEST_FUNC_REQUIRES_FILENAME("lookup_fullroute_update", test_lookup_linx_update, filename, ret);
 
     return ret;
 }
