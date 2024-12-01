@@ -10,6 +10,11 @@
 #include <arpa/inet.h>
 #include <time.h>
 
+#include <sys/time.h>
+#include <inttypes.h>
+#include <x86intrin.h>
+#include <x86intrin.h>
+
 
 #define RAND_SIZE  1000000 
 
@@ -140,6 +145,8 @@ int load_fib(struct lookup_trie *trie, FILE *fp)
     uint32_t cidr;
     uint64_t key = 1;
 
+    double runtime = 0.0;
+
     while((read = getline(&line, &len, fp)) != -1){
         uint32_t ip1,ip2,ip3,ip4,port;
         if((sscanf(line, "%d.%d.%d.%d/%d\t%d",&ip1, &ip2, &ip3, &ip4, &cidr, &port)) !=6 ) {
@@ -147,14 +154,15 @@ int load_fib(struct lookup_trie *trie, FILE *fp)
             exit(-1);
         }
         ip = (ip1<<24) + (ip2<<16) + (ip3<<8) + ip4;
-        if (key < 10)
-        {
-            printf("ip: %u \ %u %u %u %u, cidr: %u  ", ip, ip1, ip2, ip3, ip4, cidr);
-        }
+        clock_t start_time = clock();
         insert_prefix(trie, ip, cidr, (struct next_hop_info*)key);
+        clock_t end_time = clock();
+        runtime += (double)(end_time - start_time) / CLOCKS_PER_SEC;
         key++;
         i++;
     }
+
+    printf("compilation-time (load fib): %lf\n", runtime);
 
     return i ;
  
@@ -378,44 +386,61 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename)
         }
 
         uint32_t ip_tmp;
-
-        if (i & 0x01) {
-        }
-        else {
-            ip = (ip1<<24) + (ip2<<16) + (ip3<<8) + ip4;
-            ips[i] = ip;
-        }
+        // if (i & 0x01) {
+        // }
+        // else {
+        ip = (ip1<<24) + (ip2<<16) + (ip3<<8) + ip4;
+        ips[i] = ip;
+        // }
         i++;
     }
     // int ip_cnt = i/2;
     int ip_cnt = i;
+
     printf("ip_cnt: %d\n", ip_cnt);
     printf("counter: %d\n", counter);
 
+    struct timespec tp_b;
+    struct timespec tp_a;
 
+    //int j;
+    //for (j=0;j<10;j++){
 
+    // clock_gettime(CLOCK_MONOTONIC, &tp_a);
+
+    clock_t start_time = clock();
+
+    unsigned long long cycles = 0;
     int cnt=0;
     for (i = 0; i< ip_cnt ;i++){
 
-        if (i < 10)
-            printf("ips[%d]: %u / %lu\n", i, ips[i], ips[i]);
+    	unsigned long long start_cycle = __rdtsc();
         struct next_hop_info *a = search(trie, ips[i]);
+    	unsigned long long end_cycle = __rdtsc();
+	    cycles += (end_cycle-start_cycle);
+
         uint32_t b = (uint32_t)(uint64_t)a;
-        if (key < 10)
-        {
-            printf("key: %u, b: %u\n", key, b);
-        }
         if ( b == key ) {
             cnt ++;
         }
-        else {
-            printf("**** b: %d, key: %d\n", b, key);
-        }
+        // else {
+            // printf("**** b: %d, key: %d\n", b, key);
+        // }
 
         key ++;
     }
+    clock_t end_time = clock();
 
-    printf("match %d\n", cnt);
+    // clock_gettime(CLOCK_MONOTONIC, &tp_b);
+// 
+    // double runtime = (tp_b.tv_nsec - tp_a.tv_nsec);
+    double runtime2 = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    // printf("runtime: %lf\n", runtime);
+    printf("runtime2: %lf\n", runtime2);
+    printf("Cycles: %u\n", cycles);
+
+
+    printf("match %d / %d\n", cnt, ip_cnt);
     fclose(fp);
     free(ips);
     //mem_usage(&trie->mm);
@@ -500,7 +525,7 @@ void test_random_ips(struct lookup_trie *trie, char * filename)
 
     while((read = getline(&line, &len, fp)) != -1){
         if (i & 0x01) {
-            printf("cidr %d, key %d\n",array[i/2].cidr, array[i/2].key);
+            // printf("cidr %d, key %d\n",array[i/2].cidr, array[i/2].key);
         }
         else {
             ip = inet_network(line);
@@ -549,7 +574,14 @@ void ipv4_test(char * filename)
     struct lookup_trie trie;
     memset(&trie, 0, sizeof(struct lookup_trie));
 
+
+
+    clock_t start_time = clock();
     init_lookup_trie(&trie);
+    clock_t end_time = clock();
+    double runtime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("compilation-time: %lf\n", runtime);
+
 
     // load_routes(&trie, fp);
     load_fib(&trie, fp);
