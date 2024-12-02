@@ -332,6 +332,7 @@ test_lookup_linx(char * filename, char* filename_out)
     printf("                    number of leaves: %d / %d (%2.1lf\%)\n", leaf_count, max_leaves, 100 * (double)leaf_count / (double)max_leaves);
     printf("    memory footprint (based on tree): %d\n", memory_footprint);
     printf("                  lookup rate (Mlps): %lf\n", num_lookups / (runtime * 1e6));
+    printf("                              output: %s\n", filename_out);
 
     /* Write output to file. */
     if (filename_out == NULL) {
@@ -345,7 +346,6 @@ test_lookup_linx(char * filename, char* filename_out)
         exit(-1);
     }
 
-    printf("                   Writing output in: %s\n", filename_out);
     fprintf(fp_out, "poptrie\n%llu\n%lf\n%lf\n%lf\n%d\n%d\n%d\n%d\n%d\n%llu\n", 0x100000000ULL, lookup_rate, lookup_runtime, build_runtime,
         node_count, leaf_count, max_nodes, max_leaves, memory_footprint, t1);
     fclose(fp_out);

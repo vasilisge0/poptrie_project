@@ -30,6 +30,20 @@ struct lookup_trie{
 };
 
 
+struct Benchmark_Info
+{
+    double build_runtime;
+    double runtime;
+    long int num_lookups;
+    long long unsigned num_cycles;
+    int node_count;
+    int max_nodes;
+    int leaf_count;
+    int max_leaves;
+    int memory_footprint;
+    double lookup_rate;
+    double lookup_runtime;
+};
 
 
 struct next_hop_info * search(struct lookup_trie *trie, uint32_t ip);
@@ -37,7 +51,7 @@ void insert_prefix(struct lookup_trie *trie, uint32_t ip, int cidr, struct next_
 //void initial_table_init();
 //void init_bits_lookup();
 
-int init_lookup_trie(struct lookup_trie *trie);
+int init_lookup_trie(struct lookup_trie *trie, struct Benchmark_Info* log);
 void delete_prefix(struct lookup_trie *trie, uint32_t ip, int cidr, 
         void (*destroy_nhi)(struct next_hop_info *nhi));
 

@@ -7,7 +7,7 @@ cd ../modified_poptrie/build/;
 
 # heaptrack .libs/poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
 
-./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt ../../output/linx-rib.20141217.0000-p46-0.out.txt
+./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt ../../output/poptrie-linx-rib.20141217.0000-p46-0.out.txt
 
 # ./poptrie_test_basic ../tests/linx-rib.20141217.0000-p46.txt
  cd ../../tests;

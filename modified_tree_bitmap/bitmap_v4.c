@@ -8,18 +8,26 @@
 #include "hmap.h"
 #include "fast_lookup.h"
 #include <arpa/inet.h>
+#include "time.h"
 
 
-int init_lookup_trie(struct lookup_trie *trie)
+int init_lookup_trie(struct lookup_trie *trie, struct Benchmark_Info* log)
 {
     if (!trie) {
         printf("Wrong argument\n");
         return -1;
     }
 
+    clock_t start_time = clock();
     fast_table_init();
+    clock_t end_time = clock();
+    double runtime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    log->build_runtime = runtime;
 
     trie->init = (struct init_node_v6*)calloc(1,(1 << INITIAL_BITS) * sizeof(struct init_node_v6));
+
+    log->max_nodes = (1 << INITIAL_BITS);
+    log->memory_footprint = (1 << INITIAL_BITS) * sizeof(struct init_node_v6);
 
     trie->up_aux.external= 0;
     trie->up_aux.internal= 0;
