@@ -28,6 +28,22 @@
 #include <x86intrin.h>
 #include <x86intrin.h>
 
+struct Benchmark_Info
+{
+    double build_runtime;
+    double runtime;
+    long long unsigned num_lookups;
+    long long unsigned num_cycles;
+    int node_count;
+    int max_nodes;
+    int leaf_count;
+    int max_leaves;
+    int memory_usage;
+    double lookup_rate;
+    double lookup_runtime;
+};
+
+
 /* Macro for testing */
 #define TEST_FUNC(str, func, ret)                \
     do {                                         \
@@ -196,8 +212,9 @@ int count(struct radix_tree_node* root){
 }
 
 static int
-test_lookup_linx_performance(char * filename)
+test_lookup_linx_performance(char* filename, char* filename_out)
 {
+    struct Benchmark_Info log;
     struct radix_tree *rt;
     FILE *fp;
     char buf[4096];
@@ -207,7 +224,7 @@ test_lookup_linx_performance(char * filename)
     int ret;
     uint8_t addr1[4];
     uint64_t addr2;
-    ssize_t i;
+    size_t i;
     uint64_t res;
     double t0;
     double t1;
@@ -261,6 +278,7 @@ test_lookup_linx_performance(char * filename)
         i++;
     }
     t1 = getmicrotime();
+    log.build_runtime = (t1-t0);
     printf(" Compilation time (s): %lf\n", (t1-t0));
     printf("Depth: %d\n", depth(rt->root));
     printf("Node count: %d\n", count(rt->root));
@@ -283,11 +301,45 @@ test_lookup_linx_performance(char * filename)
     }
     t1 = getmicrotime();
 
-    printf("RESULT: %" PRIu64 "\n", res);
 
+
+    printf("RESULT: %" PRIu64 "\n", res);
     printf("Result[0]: %lf ns/lookup\n", (t1 - t0)/i * 1000000000);
     printf("Result[1]: %lf Mlps\n", 1.0 * i / (t1 - t0) / 1000000);
     printf("Cycles per lookup: %u\n", cycles/i);
+
+    log.num_lookups = i;
+    log.runtime = (t1 - t0);
+    log.num_cycles = cycles;
+    log.memory_usage = bytes;
+    log.node_count = count(rt->root);
+
+    printf("\n                       build runtime: %lf\n", log.build_runtime);
+    printf("                      lookup runtime: %lf\n", log.runtime);
+    printf("                         num_lookups: %ld\n", (long int)log.num_lookups);
+    printf("                    number of cycles: %llu\n", log.num_cycles);
+    printf("                 cycles / per lookup: %llu\n", log.num_cycles / log.num_lookups);
+    printf("                     number of nodes: %d\n", log.node_count);
+    printf("        memory usage (based on tree): %d\n", log.memory_usage);
+    printf("                  lookup rate (Mlps): %lf\n", log.num_lookups / (log.runtime * 1e6));
+    printf("                              output: %s\n", filename_out);
+
+    /* Write output to file. */
+    if (filename_out == NULL) {
+        perror("output filename is NULL\n");
+        exit(-1);
+    }
+
+    FILE* fp_out = fopen(filename_out, "w");
+    if (fp_out == NULL) {
+        perror("Error in opening output file.");
+        exit(-1);
+    }
+
+    fprintf(fp_out, "poptrie\n%ld\n%lf\n%lf\n%lf\n%d\n%d\n%d\n%d\n%d\n%llu\n", log.num_lookups, log.lookup_rate, log.lookup_runtime, log.build_runtime,
+        log.node_count, log.leaf_count, log.max_nodes, log.max_leaves, log.memory_usage, log.num_cycles);
+    fclose(fp_out);
+
 
     /* Release */
     radix_tree_release(rt);
@@ -317,7 +369,12 @@ main(int argc, const char *const argv[])
     /* Run tests */
     // TEST_FUNC("init", test_init, ret);
     // TEST_FUNC("lookup", test_lookup, ret);
-    TEST_FUNC_REQUIRES_FILENAME("performance", test_lookup_linx_performance, filename, ret);
+    // TEST_FUNC_REQUIRES_FILENAME("performance", test_lookup_linx_performance, filename, ret);
+
+    if (argc == 3) {
+        char* filename_out = argv[2];
+        ret = test_lookup_linx_performance(filename, filename_out);
+    }
 
     return 0;
 }

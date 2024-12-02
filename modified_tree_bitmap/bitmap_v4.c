@@ -18,11 +18,7 @@ int init_lookup_trie(struct lookup_trie *trie, struct Benchmark_Info* log)
         return -1;
     }
 
-    clock_t start_time = clock();
     fast_table_init();
-    clock_t end_time = clock();
-    double runtime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    log->build_runtime = runtime;
 
     trie->init = (struct init_node_v6*)calloc(1,(1 << INITIAL_BITS) * sizeof(struct init_node_v6));
 

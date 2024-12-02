@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <time.h>
+#include "time.h"
 
 #include <sys/time.h>
 #include <inttypes.h>
