@@ -586,6 +586,7 @@ void ipv4_test(char* filename, char* filename_out)
     printf("                      lookup runtime: %lf\n", log.lookup_runtime);
     printf("                         num_lookups: %ld\n", (long int)log.num_lookups);
     printf("                    number of cycles: %llu\n", log.num_cycles);
+    printf("                   cycles per lookup: %ld\n", log.num_cycles / (long int)log.num_lookups);
     printf("                     number of nodes: %d / %d (%2.1lf\%)\n", log.node_count, log.max_nodes, 100 * (double)log.node_count / (double)log.max_nodes);
     printf("                    number of leaves: %d / %d (%2.1lf\%)\n", log.leaf_count, log.max_leaves, 100 * (double)log.leaf_count / (double)log.max_leaves);
     printf("    memory footprint (based on tree): %d\n", log.memory_footprint);
