@@ -934,7 +934,7 @@ void CFib::Update(int insertport, char *insert_C, int operation_type, char* spre
 			}
 			else {//do level-pushing
 				subTrieLevelPushing(insertNode, insertNode->oldPort, origPrefix, &sArg);
-				printf("newBorneNode Error!!!\n");
+				// printf("newBorneNode Error!!!\n");
 				//printf("%s %d\n", sprefix, insertport);
 			}
 			

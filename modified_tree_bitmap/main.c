@@ -368,12 +368,15 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename, struct Benchma
     uint32_t ip;
     uint32_t key = 1;
 
+    uint32_t t0;
+    uint32_t t1;
+    uint32_t t2;
     int counter = 0;
     while((read = getline(&line, &len, fp)) != -1){
 
         counter += 1;
         uint32_t ip1,ip2,ip3,ip4,port,cidr;
-        if((sscanf(line, "%d.%d.%d.%d/%d\t%d",&ip1, &ip2, &ip3, &ip4, &cidr, &port)) !=6 ) {
+        if((sscanf(line, "%d.%d.%d.%d/%d %d.%d.%d.%d",&ip1, &ip2, &ip3, &ip4, &cidr, &port, &t0, &t1, &t2)) < 0) {
             printf("fib format error\n");
             exit(-1);
         }
@@ -405,6 +408,7 @@ void test_lookup_valid(struct lookup_trie *trie, char * filename, struct Benchma
     unsigned long long cycles = 0;
     int cnt=0;
     for (i = 0; i< ip_cnt ;i++){
+    // for (i = 0; i< 0x100000000ULL; i++){
 
     	unsigned long long start_cycle = __rdtsc();
         struct next_hop_info *a = search(trie, ips[i]);

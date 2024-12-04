@@ -39,6 +39,20 @@ char ret[IP_LEN+1];
 #define UpdateFileCount		6
 #define UPDATE_ALG	_MINI_REDUANDANCY_TWOTRAS
 
+struct Benchmark_Info
+{
+    double build_runtime;
+    double runtime;
+    long long unsigned num_lookups;
+    long long unsigned num_cycles;
+    int node_count;
+    int max_nodes;
+    int leaf_count;
+    int max_leaves;
+    int memory_usage;
+    double lookup_rate;
+    double lookup_runtime;
+};
 
 int FindFibTrieNextHop(FibTrie * m_trie, char * insert_C)
 {
@@ -444,7 +458,7 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 	printf("\n\nsail algorithm starts...\n\n");
 	CFib tFib = CFib();
 	tFib.BuildFibFromFile(fib_file);
-	unsigned int *traffic=tFib.TrafficRead(traffic_file);
+	// unsigned int *traffic=tFib.TrafficRead(traffic_file);
 
 	register unsigned char LPMPort=0;
 
@@ -457,19 +471,16 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 	unsigned long long start = __rdtsc();
 	auto t0 = std::chrono::high_resolution_clock::now();
 	printf("TRACE_READ: %d", TRACE_READ);
-	for (register int j=0;j<10000;j++)
+	for (register int j=0;j<30000;j++)
 	{
-		for (register int i=0;i<TRACE_READ;i++)
-		{
-			if ((i < 2) && (j < 2))
-			{
-				printf("i: %d, j: %d\n", i, j);
-			}
-			LPMPort=tFib.sailLookup(traffic[i]);
-		}
+		// for (register int i=0;i<TRACE_READ;i++)
+		// {
+			// LPMPort=tFib.sailLookup(traffic[i]);
+		// }
+		LPMPort=tFib.sailLookup(j);
 	}
 	auto t1 = std::chrono::high_resolution_clock::now();
-	double runtime = (double)std::chrono::duration_cast<std::chrono::seconds>(t1-t0).count();
+	double runtime = (double)std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count();
 	unsigned long long end = __rdtsc();
 	unsigned long long rdtsc_time = end - start;
 
@@ -481,7 +492,7 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 	// long long Lookuptime=1000000*(privious1.QuadPart-privious.QuadPart)/frequence.QuadPart;
 	// printf("\tLMPport=%d\n\tLookup time=%u\n\tThroughput is:\t %.3f Mpps\n",LPMPort,Lookuptime, 10000.0*TRACE_READ/Lookuptime);
 
-	int updateEntryCount = BFLevelPushingTrieUpdate(updateFile, &tFib);
+	// int updateEntryCount = BFLevelPushingTrieUpdate(updateFile, &tFib);
 }
 
 
@@ -489,6 +500,12 @@ void sailPerformanceTest(char *traffic_file, char* fib_file)
 
 void test(int argc, char** argv)
 {
+	Benchmark_Info log;
+	char* filename_out;
+	if (argc >= 4) {
+		filename_out = argv[3];
+	}
+
 	/******************************************Stage 1******************************************/
 	printf("\t\tStage One: The Initial Trie Construction\n");
 	//build FibTrie
@@ -529,10 +546,14 @@ void test(int argc, char** argv)
 
 	//printf("%d\n", tFib.nodes);
 	printf("\tCompilation time: %uus\n", std::chrono::duration_cast<std::chrono::microseconds>(two-one).count());
+	log.build_runtime = std::chrono::duration_cast<std::chrono::microseconds>(two-one).count() / 1e6;
 	printf("\tDepth: %u\n", depth(tFib.m_pTrie));
 
 	tFib.ytGetNodeCounts();
 	printf("\tBytes Used: %u\n", tFib.allNodeCount * sizeof(struct FibTrie));
+	log.max_nodes = tFib.allNodeCount;
+	log.node_count = tFib.solidNodeCount;
+	log.memory_usage = tFib.allNodeCount * sizeof(struct FibTrie);
 	
 	printf("\nThe total number of Trie node is :\t%u.\n",tFib.allNodeCount);
 	printf("The total number of solid Trie node is :\t%d.\n", tFib.solidNodeCount);
@@ -600,6 +621,16 @@ void test(int argc, char** argv)
 
 	printf("\nMission Complete, Press any key to continue...\n");
 	//system("pause");
+
+	printf("\n                       build runtime: %lf\n", log.build_runtime);
+    printf("                      lookup runtime: %lf\n", log.runtime);
+    printf("                         num_lookups: %ld\n", (long int)log.num_lookups);
+    printf("                    number of cycles: %llu\n", log.num_cycles);
+    // printf("                 cycles / per lookup: %llu\n", log.num_cycles / log.num_lookups);
+    printf("                     number of nodes: %d\n", log.node_count);
+    printf("        memory usage (based on tree): %d\n", log.memory_usage);
+    // printf("                  lookup rate (Mlps): %lf\n", log.num_lookups / (log.runtime * 1e6));
+    printf("                              output: %s\n", filename_out);
 }
 
 
@@ -611,7 +642,7 @@ int main (int argc, char** argv) {
 	if (argc<3) {
 		printf("Usage: %s [traffic file <updates>] [fib file <rrc01-12.1.1.txt>]\n", argv[0]);
 	}
-	else if (argc == 3)
+	else if (argc == 4)
 	{
 		printf("before performance test\n");
 		// sailPerformanceTest(argv[1], argv[2]);
